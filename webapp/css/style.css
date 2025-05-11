@@ -1,0 +1,72 @@
+/* Main styles for Employee Calendar Application */
+
+/* Login page */
+.loginPanel {
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Calendar styling */
+.sapUiCal {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Employee list */
+.employeeList .sapMObjLIcon {
+    color: #354a5f;
+}
+
+.employeeList .sapMObjLTitle {
+    font-weight: bold;
+}
+
+/* Schedule status colors */
+.workStatus {
+    color: #427cac;
+}
+
+.overtimeStatus {
+    color: #e78c07;
+}
+
+.vacationStatus {
+    color: #2b7d2b;
+}
+
+.sickStatus {
+    color: #bb0000;
+}
+
+.trainingStatus {
+    color: #c14a0d;
+}
+
+.remoteStatus {
+    color: #354a5f;
+}
+
+.businessTripStatus {
+    color: #6c38af;
+}
+
+/* Schedule timeline */
+.timelineItem {
+    margin-bottom: 0.25rem;
+}
+
+.timelineContent {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .sapUiCal {
+        max-width: 100%;
+    }
+    
+    .leftPanel {
+        width: 100% !important;
+    }
+}

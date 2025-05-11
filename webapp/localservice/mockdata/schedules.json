@@ -1,0 +1,282 @@
+[
+  {
+    "id": "SCH001",
+    "employeeId": "E001",
+    "startDate": "2025-05-01",
+    "endDate": "2025-05-15",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH002",
+    "employeeId": "E001",
+    "startDate": "2025-05-16",
+    "endDate": "2025-05-18",
+    "status": "Overtime",
+    "description": "Sprint deadline",
+    "hours": 10,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH003",
+    "employeeId": "E001",
+    "startDate": "2025-05-19",
+    "endDate": "2025-05-23",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH004",
+    "employeeId": "E001",
+    "startDate": "2025-05-24",
+    "endDate": "2025-06-07",
+    "status": "Vacation",
+    "description": "Annual leave",
+    "hours": 0,
+    "location": ""
+  },
+  {
+    "id": "SCH005",
+    "employeeId": "E001",
+    "startDate": "2025-06-08",
+    "endDate": "2025-06-30",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH006",
+    "employeeId": "E002",
+    "startDate": "2025-05-01",
+    "endDate": "2025-05-10",
+    "status": "Training",
+    "description": "UX certification",
+    "hours": 8,
+    "location": "Training Center"
+  },
+  {
+    "id": "SCH007",
+    "employeeId": "E002",
+    "startDate": "2025-05-11",
+    "endDate": "2025-05-20",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH008",
+    "employeeId": "E002",
+    "startDate": "2025-05-21",
+    "endDate": "2025-05-25",
+    "status": "Sick",
+    "description": "Sick leave",
+    "hours": 0,
+    "location": ""
+  },
+  {
+    "id": "SCH009",
+    "employeeId": "E002",
+    "startDate": "2025-05-26",
+    "endDate": "2025-06-15",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH010",
+    "employeeId": "E003",
+    "startDate": "2025-05-01",
+    "endDate": "2025-05-12",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH011",
+    "employeeId": "E003",
+    "startDate": "2025-05-13",
+    "endDate": "2025-05-15",
+    "status": "Business Trip",
+    "description": "Client meeting in London",
+    "hours": 8,
+    "location": "London"
+  },
+  {
+    "id": "SCH012",
+    "employeeId": "E003",
+    "startDate": "2025-05-16",
+    "endDate": "2025-06-30",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH013",
+    "employeeId": "E004",
+    "startDate": "2025-05-01",
+    "endDate": "2025-05-10",
+    "status": "Vacation",
+    "description": "Family vacation",
+    "hours": 0,
+    "location": ""
+  },
+  {
+    "id": "SCH014",
+    "employeeId": "E004",
+    "startDate": "2025-05-11",
+    "endDate": "2025-06-30",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH015",
+    "employeeId": "E005",
+    "startDate": "2025-05-01",
+    "endDate": "2025-05-14",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH016",
+    "employeeId": "E005",
+    "startDate": "2025-05-15",
+    "endDate": "2025-05-17",
+    "status": "Sick",
+    "description": "Sick leave",
+    "hours": 0,
+    "location": ""
+  },
+  {
+    "id": "SCH017",
+    "employeeId": "E005",
+    "startDate": "2025-05-18",
+    "endDate": "2025-05-31",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH018",
+    "employeeId": "E005",
+    "startDate": "2025-06-01",
+    "endDate": "2025-06-30",
+    "status": "Remote",
+    "description": "Remote work",
+    "hours": 8,
+    "location": "Home Office"
+  },
+  {
+    "id": "SCH019",
+    "employeeId": "E006",
+    "startDate": "2025-05-01",
+    "endDate": "2025-05-07",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH020",
+    "employeeId": "E006",
+    "startDate": "2025-05-08",
+    "endDate": "2025-05-15",
+    "status": "Training",
+    "description": "Frontend development workshop",
+    "hours": 8,
+    "location": "Training Center"
+  },
+  {
+    "id": "SCH021",
+    "employeeId": "E006",
+    "startDate": "2025-05-16",
+    "endDate": "2025-06-30",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH022",
+    "employeeId": "E007",
+    "startDate": "2025-05-01",
+    "endDate": "2025-05-20",
+    "status": "Remote",
+    "description": "Remote work",
+    "hours": 8,
+    "location": "Home Office"
+  },
+  {
+    "id": "SCH023",
+    "employeeId": "E007",
+    "startDate": "2025-05-21",
+    "endDate": "2025-06-10",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH024",
+    "employeeId": "E007",
+    "startDate": "2025-06-11",
+    "endDate": "2025-06-25",
+    "status": "Vacation",
+    "description": "Summer vacation",
+    "hours": 0,
+    "location": ""
+  },
+  {
+    "id": "SCH025",
+    "employeeId": "E007",
+    "startDate": "2025-06-26",
+    "endDate": "2025-06-30",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH026",
+    "employeeId": "E008",
+    "startDate": "2025-05-01",
+    "endDate": "2025-05-31",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH027",
+    "employeeId": "E008",
+    "startDate": "2025-06-01",
+    "endDate": "2025-06-07",
+    "status": "Overtime",
+    "description": "Release testing",
+    "hours": 10,
+    "location": "Main Office"
+  },
+  {
+    "id": "SCH028",
+    "employeeId": "E008",
+    "startDate": "2025-06-08",
+    "endDate": "2025-06-30",
+    "status": "Work",
+    "description": "Regular work schedule",
+    "hours": 8,
+    "location": "Main Office"
+  }
+]

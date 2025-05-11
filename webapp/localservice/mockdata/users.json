@@ -1,0 +1,50 @@
+[
+  {
+    "employeeId": "E001",
+    "password": "password1",
+    "name": "John Smith",
+    "email": "john.smith@example.com",
+    "role": "Employee",
+    "lastLogin": "2025-04-10T08:30:00Z"
+  },
+  {
+    "employeeId": "E002",
+    "password": "password2",
+    "name": "Anna Johnson",
+    "email": "anna.johnson@example.com",
+    "role": "Manager",
+    "lastLogin": "2025-04-09T14:15:00Z"
+  },
+  {
+    "employeeId": "E003",
+    "password": "password3",
+    "name": "Robert Chen",
+    "email": "robert.chen@example.com",
+    "role": "Manager",
+    "lastLogin": "2025-04-08T09:45:00Z"
+  },
+  {
+    "employeeId": "E004",
+    "password": "password4",
+    "name": "Maria Garcia",
+    "email": "maria.garcia@example.com",
+    "role": "Employee",
+    "lastLogin": "2025-04-10T11:30:00Z"
+  },
+  {
+    "employeeId": "E005",
+    "password": "password5",
+    "name": "David Kim",
+    "email": "david.kim@example.com",
+    "role": "Employee",
+    "lastLogin": "2025-04-09T16:20:00Z"
+  },
+  {
+    "employeeId": "admin",
+    "password": "admin",
+    "name": "Administrator",
+    "email": "admin@example.com",
+    "role": "Admin",
+    "lastLogin": "2025-04-10T07:15:00Z"
+  }
+]

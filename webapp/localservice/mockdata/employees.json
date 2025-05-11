@@ -1,0 +1,82 @@
+[
+  {
+    "id": "E001",
+    "name": "John Smith",
+    "position": "Software Developer",
+    "department": "IT",
+    "email": "john.smith@example.com",
+    "phone": "+1234567890",
+    "manager": "Robert Chen",
+    "hireDate": "2020-01-15"
+  },
+  {
+    "id": "E002",
+    "name": "Anna Johnson",
+    "position": "UX Designer",
+    "department": "Design",
+    "email": "anna.johnson@example.com",
+    "phone": "+1234567891",
+    "manager": "Robert Chen",
+    "hireDate": "2019-05-20"
+  },
+  {
+    "id": "E003",
+    "name": "Robert Chen",
+    "position": "Project Manager",
+    "department": "Management",
+    "email": "robert.chen@example.com",
+    "phone": "+1234567892",
+    "manager": "James Wilson",
+    "hireDate": "2018-03-10"
+  },
+  {
+    "id": "E004",
+    "name": "Maria Garcia",
+    "position": "Business Analyst",
+    "department": "Business",
+    "email": "maria.garcia@example.com",
+    "phone": "+1234567893",
+    "manager": "James Wilson",
+    "hireDate": "2021-02-05"
+  },
+  {
+    "id": "E005",
+    "name": "David Kim",
+    "position": "System Administrator",
+    "department": "IT",
+    "email": "david.kim@example.com",
+    "phone": "+1234567894",
+    "manager": "Robert Chen",
+    "hireDate": "2019-11-18"
+  },
+  {
+    "id": "E006",
+    "name": "Linda Taylor",
+    "position": "Frontend Developer",
+    "department": "IT",
+    "email": "linda.taylor@example.com",
+    "phone": "+1234567895",
+    "manager": "Robert Chen",
+    "hireDate": "2021-09-01"
+  },
+  {
+    "id": "E007",
+    "name": "Michael Brown",
+    "position": "Backend Developer",
+    "department": "IT",
+    "email": "michael.brown@example.com",
+    "phone": "+1234567896",
+    "manager": "Robert Chen",
+    "hireDate": "2020-07-15"
+  },
+  {
+    "id": "E008",
+    "name": "Sophia Lee",
+    "position": "QA Engineer",
+    "department": "IT",
+    "email": "sophia.lee@example.com",
+    "phone": "+1234567897",
+    "manager": "Robert Chen",
+    "hireDate": "2022-03-22"
+  }
+]

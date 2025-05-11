@@ -1,0 +1,132 @@
+<mvc:View
+    controllerName="com.employeecalendar.controller.Login"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout">
+    
+    <Page id="loginPage" showHeader="false" enableScrolling="false">
+        <content>
+            <FlexBox
+                height="100%"
+                alignItems="Center"
+                justifyContent="Center">
+                
+                <Panel
+                    width="35rem"
+                    class="sapUiContentPadding loginPanel"
+                    accessibleRole="Region">
+                    
+                    <VBox>
+                        <HBox justifyContent="Center" class="sapUiMediumMarginBottom">
+                            <Icon
+                                src="sap-icon://calendar"
+                                size="3rem"
+                                color="#0854A0" />
+                        </HBox>
+                        
+                        <Title
+                            text="{i18n>companyName}"
+                            level="H2"
+                            titleStyle="H2"
+                            textAlign="Center"
+                            class="sapUiMediumMarginBottom" />
+                        
+                        <Title
+                            text="{i18n>appTitle}"
+                            level="H4"
+                            titleStyle="H4"
+                            textAlign="Center"
+                            class="sapUiSmallMarginBottom" />
+                    </VBox>
+                    
+                    <form:SimpleForm
+                        editable="true"
+                        layout="ResponsiveGridLayout"
+                        labelSpanXL="4"
+                        labelSpanL="4"
+                        labelSpanM="4"
+                        labelSpanS="12"
+                        adjustLabelSpan="false"
+                        emptySpanXL="0"
+                        emptySpanL="0"
+                        emptySpanM="0"
+                        emptySpanS="0"
+                        columnsXL="1"
+                        columnsL="1"
+                        columnsM="1"
+                        singleContainerFullSize="false">
+                        
+                        <form:content>
+                            <Label text="{i18n>employeeIdLabel}" required="true" />
+                            <Input
+                                id="employeeId"
+                                type="Text"
+                                placeholder="{i18n>employeeIdPlaceholder}"
+                                value="{login>/employeeId}"
+                                liveChange="onLiveChange" />
+                                
+                            <Label text="{i18n>passwordLabel}" required="true" />
+                            <Input
+                                id="password"
+                                type="Password"
+                                placeholder="{i18n>passwordPlaceholder}"
+                                value="{login>/password}"
+                                liveChange="onLiveChange"
+                                submit="onLoginPress" />
+                                
+                            <core:Title />
+                            
+                            <CheckBox
+                                id="rememberMe"
+                                text="{i18n>rememberMeText}"
+                                selected="{login>/rememberMe}" />
+                                
+                            <HBox justifyContent="End">
+                                <Button
+                                    id="submitButton"
+                                    text="{i18n>loginButtonText}"
+                                    type="Emphasized"
+                                    press="onLoginPress"
+                                    enabled="{login>/submitEnabled}" />
+                            </HBox>
+                            
+                            <MessageStrip
+                                id="errorMessage"
+                                text="{login>/errorMessage}"
+                                type="Error"
+                                showIcon="true"
+                                visible="{= !!${login>/errorMessage} }"
+                                class="sapUiSmallMarginTop" />
+                                
+                        </form:content>
+                    </form:SimpleForm>
+                    
+                    <HBox justifyContent="Center" class="sapUiSmallMarginTop">
+                        <Link
+                            id="forgotPasswordLink"
+                            text="{i18n>forgotPasswordText}"
+                            press="onForgotPasswordPress" />
+                    </HBox>
+                    
+                    <VBox class="sapUiMediumMarginTop">
+                        <MessageStrip
+                            type="Information"
+                            text="{i18n>loginInformationText}"
+                            showIcon="true" />
+                    </VBox>
+                </Panel>
+            </FlexBox>
+        </content>
+        
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                <Text text="{i18n>footerText}" />
+                <ToolbarSpacer />
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>
