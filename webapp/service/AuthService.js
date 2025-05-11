@@ -127,7 +127,7 @@ sap.ui.define([
         getEmployees() {
             return new Promise((resolve, reject) => {
                 const sUrl = this._bMockMode ? 
-                    "localservice/mockdata/employees.json" : 
+                    sap.ui.require.toUrl("com/employeecalendar/localservice/mockdata/employees.json") : 
                     `${this._sBaseUrl}/employees`;
                 
                 fetch(sUrl)
@@ -199,7 +199,7 @@ sap.ui.define([
             return new Promise((resolve, reject) => {
                 // Simulate network delay
                 setTimeout(() => {
-                    fetch(sap.ui.require.toUrl("com/employeecalendar/localservice/mockdata/users.json"))
+                    fetch(sap.ui.require.toUrl("com/employeecalendar/localservice/mockdata/schedules.json"))
                         .then(response => response.json())
                         .then(aSchedules => {
                             // Convert start and end dates for comparison
