@@ -86,7 +86,7 @@ sap.ui.define([
                 // Simulate network delay
                 setTimeout(() => {
                     // Load users.json
-                    fetch("localService/mockdata/users.json")
+                    fetch(sap.ui.require.toUrl("com/employeecalendar/localservice/mockdata/users.json"))
                         .then(response => response.json())
                         .then(aUsers => {
                             // Find user with matching credentials
@@ -127,7 +127,7 @@ sap.ui.define([
         getEmployees() {
             return new Promise((resolve, reject) => {
                 const sUrl = this._bMockMode ? 
-                    "localService/mockdata/employees.json" : 
+                    "localservice/mockdata/employees.json" : 
                     `${this._sBaseUrl}/employees`;
                 
                 fetch(sUrl)
@@ -199,7 +199,7 @@ sap.ui.define([
             return new Promise((resolve, reject) => {
                 // Simulate network delay
                 setTimeout(() => {
-                    fetch("localService/mockdata/schedules.json")
+                    fetch(sap.ui.require.toUrl("com/employeecalendar/localservice/mockdata/users.json"))
                         .then(response => response.json())
                         .then(aSchedules => {
                             // Convert start and end dates for comparison

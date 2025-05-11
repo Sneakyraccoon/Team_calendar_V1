@@ -16,7 +16,30 @@ sap.ui.define([
             });
 
             // Configure mock server
-            const sLocalServicePath = sap.ui.require.toUrl("com/employeecalendar/localService");
+            const sLocalServicePath = sap.ui.require.toUrl("com/employeecalendar/localservice");
+            
+            // Add handlers for API endpoints
+            oMockServer.setRequests([
+                // Handler for root API endpoint
+                {
+                    method: "GET",
+                    path: "/",
+                    response: function(oXhr) {
+                        oXhr.respondJSON(200, {}, { success: true, message: "Mock API is running" });
+                        return true;
+                    }
+                },
+                // Handler for login
+                {
+                    method: "POST",
+                    path: "/auth/login",
+                    response: function(oXhr) {
+                        // This would be handled in AuthService.js mock login function
+                        oXhr.respondJSON(200, {}, { success: true });
+                        return true;
+                    }
+                }
+            ]);
             
             // Initialize the mock server
             try {
@@ -25,9 +48,6 @@ sap.ui.define([
             } catch (oError) {
                 Log.error("Failed to start mock server", oError);
             }
-            
-            // Set property to indicate that we're running with mock data
-            this._bIsMocked = true;
         }
     };
 });

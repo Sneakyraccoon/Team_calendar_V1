@@ -14,7 +14,7 @@
         "uri": "/backend/api/",
         "type": "JSON",
         "settings": {
-          "localUri": "localService/mockdata"
+          "localUri": "localservice/mockdata"
         }
       }
     }
@@ -29,6 +29,15 @@
   },
   "sap.ui5": {
     "flexEnabled": true,
+    "i18n": {
+      "bundleUrl": "i18n/i18n.properties",
+      "supportedLocales": [
+        "",
+        "en",
+        "de"   
+      ],
+      "fallbackLocale": "en"
+    },
     "dependencies": {
       "minUI5Version": "1.120.0",
       "libs": {

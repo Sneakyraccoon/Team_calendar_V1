@@ -6,6 +6,7 @@
     xmlns:unified="sap.ui.unified"
     xmlns:core="sap.ui.core"
     xmlns:l="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
     height="100%">
     
     <Page id="mainPage" title="{i18n>appTitle}">
