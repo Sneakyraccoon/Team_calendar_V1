@@ -3,7 +3,7 @@ sap.ui.define([
 ], (BaseController) => {
     "use strict";
 
-    return BaseController.extend("com.employeecalendar.controller.App", {
+    return BaseController.extend("ui5.employeecalendar.controller.App", {
         /**
          * Called when controller is initialized
          * @public

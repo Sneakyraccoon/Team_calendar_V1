@@ -2,17 +2,17 @@ sap.ui.define([
     "sap/ui/base/Object",
     "sap/base/Log",
     "sap/ui/model/json/JSONModel"
-], (BaseObject, Log, JSONModel) => {
+], function (BaseObject, Log, JSONModel)  {
     "use strict";
     
     /**
      * Authentication service to handle login, logout and user management
      */
-    return BaseObject.extend("com.employeecalendar.service.AuthService", {
+    return BaseObject.extend("ui5.employeecalendar.service.AuthService", {
         /**
          * Constructor
          */
-        constructor() {
+        constructor: function() {
             BaseObject.apply(this, arguments);
             this._initService();
         },
@@ -51,6 +51,12 @@ sap.ui.define([
                     }),
                     success: (response) => {
                         if (response.success) {
+                            // Mock user data for demo
+                            response.user = {
+                                id: employeeId,
+                                name: "Demo User",
+                                role: "Employee"
+                            };
                             resolve(response);
                         } else {
                             reject(new Error(response.message || "Login failed"));
@@ -84,7 +90,7 @@ sap.ui.define([
         getEmployees() {
             return new Promise((resolve, reject) => {
                 const sUrl = this._bMockMode ? 
-                    sap.ui.require.toUrl("com/employeecalendar/localservice/mockdata/employees.json") : 
+                    sap.ui.require.toUrl("ui5/employeecalendar/localservice/mockdata/employees.json") : 
                     `${this._baseUrl}/employees`;
                 
                 fetch(sUrl)
@@ -156,7 +162,7 @@ sap.ui.define([
             return new Promise((resolve, reject) => {
                 // Simulate network delay
                 setTimeout(() => {
-                    fetch(sap.ui.require.toUrl("com/employeecalendar/localservice/mockdata/schedules.json"))
+                    fetch(sap.ui.require.toUrl("ui5/employeecalendar/localservice/mockdata/schedules.json"))
                         .then(response => response.json())
                         .then(aSchedules => {
                             // Convert start and end dates for comparison

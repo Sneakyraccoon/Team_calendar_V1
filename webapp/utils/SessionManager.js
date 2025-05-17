@@ -1,6 +1,6 @@
 sap.ui.define([
     "sap/base/Log"
-], (Log) => {
+], function (Log) {
     "use strict";
 
     const SESSION_KEY = "employeeCalendar.session";

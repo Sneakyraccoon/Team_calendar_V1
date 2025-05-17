@@ -8,7 +8,7 @@ sap.ui.define([
 ], (Controller, UIComponent, History, MessageToast, MessageBox, SessionManager) => {
     "use strict";
 
-    return Controller.extend("com.employeecalendar.controller.BaseController", {
+    return Controller.extend("ui5.employeecalendar.controller.BaseController", {
         /**
          * Convenience method for accessing the router
          * @returns {sap.ui.core.routing.Router} Router instance

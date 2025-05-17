@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="com.employeecalendar.controller.Main"
+    controllerName="ui5.employeecalendar.controller.Main"
     displayBlock="true"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc"

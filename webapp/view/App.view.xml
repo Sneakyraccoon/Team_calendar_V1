@@ -1,10 +1,11 @@
 <mvc:View
-    controllerName="com.employeecalendar.controller.App"
+    controllerName="ui5.employeecalendar.controller.App"
     displayBlock="true"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
     
-    <App id="app">
-        <!-- Pages will be dynamically added by the router -->
-    </App>
+        <App id="app">
+            <!-- Pages will be dynamically added by the router -->
+        </App>
+    
 </mvc:View>

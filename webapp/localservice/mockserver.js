@@ -16,26 +16,96 @@ sap.ui.define([
             });
 
             // Configure mock server
-            const sLocalServicePath = sap.ui.require.toUrl("com/employeecalendar/localservice");
+            const sLocalServicePath = sap.ui.require.toUrl("ui5/employeecalendar/localservice");
             
             // Add handlers for API endpoints
             oMockServer.setRequests([
-                // Handler for root API endpoint
-                {
-                    method: "GET",
-                    path: "/",
-                    response: function(oXhr) {
-                        oXhr.respondJSON(200, {}, { success: true, message: "Mock API is running" });
-                        return true;
-                    }
-                },
                 // Handler for login
                 {
                     method: "POST",
-                    path: "/auth/login",
-                    response: function(oXhr) {
-                        // This would be handled in AuthService.js mock login function
-                        oXhr.respondJSON(200, {}, { success: true });
+                    path: "auth/login",
+                    response: (oXhr) => {
+                        const oRequestBody = JSON.parse(oXhr.requestBody);
+                        
+                        // Mock authentication logic
+                        if (oRequestBody.employeeId && oRequestBody.password) {
+                            oXhr.respondJSON(200, {}, {
+                                success: true,
+                                user: {
+                                    id: oRequestBody.employeeId,
+                                    name: "Demo User",
+                                    role: "Employee"
+                                }
+                            });
+                        } else {
+                            oXhr.respondJSON(401, {}, {
+                                success: false,
+                                message: "Invalid credentials"
+                            });
+                        }
+                        return true;
+                    }
+                },
+                
+                // Handler for employees data
+                {
+                    method: "GET",
+                    path: "employees",
+                    response: (oXhr) => {
+                        jQuery.ajax({
+                            url: sap.ui.require.toUrl("ui5/employeecalendar/localservice/mockdata/employees.json"),
+                            dataType: "json",
+                            async: false,
+                            success: (oResponse) => {
+                                oXhr.respondJSON(200, {}, { employees: oResponse });
+                            },
+                            error: () => {
+                                oXhr.respondJSON(500, {}, { success: false, message: "Failed to load employees data" });
+                            }
+                        });
+                        return true;
+                    }
+                },
+                
+                // Handler for schedules data
+                {
+                    method: "GET",
+                    path: "schedules",
+                    response: (oXhr) => {
+                        const sEmployeeId = oXhr.url.split("employeeId=")[1]?.split("&")[0];
+                        const sStartDate = oXhr.url.split("startDate=")[1]?.split("&")[0];
+                        const sEndDate = oXhr.url.split("endDate=")[1]?.split("&")[0];
+                        
+                        if (!sEmployeeId || !sStartDate || !sEndDate) {
+                            oXhr.respondJSON(400, {}, { success: false, message: "Missing required parameters" });
+                            return true;
+                        }
+                        
+                        jQuery.ajax({
+                            url: sap.ui.require.toUrl("ui5/employeecalendar/localservice/mockdata/schedules.json"),
+                            dataType: "json",
+                            async: false,
+                            success: (aSchedules) => {
+                                // Filter schedules by employee ID and date range
+                                const aFilteredSchedules = aSchedules.filter(schedule => {
+                                    if (schedule.employeeId !== sEmployeeId) {
+                                        return false;
+                                    }
+                                    
+                                    const dScheduleStart = new Date(schedule.startDate);
+                                    const dScheduleEnd = new Date(schedule.endDate);
+                                    const dRangeStart = new Date(sStartDate);
+                                    const dRangeEnd = new Date(sEndDate);
+                                    
+                                    return dScheduleStart <= dRangeEnd && dScheduleEnd >= dRangeStart;
+                                });
+                                
+                                oXhr.respondJSON(200, {}, { schedules: aFilteredSchedules });
+                            },
+                            error: () => {
+                                oXhr.respondJSON(500, {}, { success: false, message: "Failed to load schedules data" });
+                            }
+                        });
                         return true;
                     }
                 }

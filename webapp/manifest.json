@@ -21,8 +21,8 @@
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0"
+				}
 			}
-		}
 		}
 	},
 	"sap.ui": {
@@ -43,8 +43,6 @@
 				"sap.ui.unified": {}
 			}
 		},
-
-
 		"models": {
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
@@ -63,7 +61,8 @@
 		"rootView": {
 			"viewName": "ui5.employeecalendar.view.App",
 			"type": "XML",
-			"id": "app"
+			"id": "app",
+			"async": true
 		},
 		"resources": {
 			"css": [
@@ -74,39 +73,40 @@
 		},
 		"routing": {
 			"config": {
-			  "routerClass": "sap.m.routing.Router",
-			  "type": "View",
-			  "viewType": "XML",
-			  "path": "ui5.employeecalendar.view",
-			  "controlId": "app",
-			  "controlAggregation": "pages"
+				"routerClass": "sap.m.routing.Router",
+				"type": "View",
+				"viewType": "XML",
+				"path": "ui5.employeecalendar.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"async": true
 			},
 			"routes": [
-			  {
-				"pattern": "",
-				"name": "overview",
-				"target": "overview"
-			  },
-			  {
-				"pattern": "detail{invoicePath}",
-				"name": "detail",
-				"target": "detail"
-			  }
+				{
+					"pattern": "",
+					"name": "login",
+					"target": "login"
+				},
+				{
+					"pattern": "main",
+					"name": "main",
+					"target": "main"
+				}
 			],
 			"targets": {
-			  "overview": {
-				"id": "overview",
-				"name": "Overview"
-			  },
-			  "detail": {
-				"id": "detail",
-				"name": "Detail"
-			  }
+				"login": {
+					"viewName": "Login",
+					"viewLevel": 0
+				},
+				"main": {
+					"viewName": "Main",
+					"viewLevel": 1
+				}
 			}
-		  },
-		  "contentDensities": {
+		},
+		"contentDensities": {
 			"compact": true,
 			"cozy": true
-		  }
+		}
 	}
 }

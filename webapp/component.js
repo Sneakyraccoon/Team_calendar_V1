@@ -7,7 +7,7 @@ sap.ui.define([
 ], (UIComponent, Device, models, mockserver, SessionManager) => {
     "use strict";
 
-    return UIComponent.extend("com.employeecalendar.Component", {
+    return UIComponent.extend("ui5.employeecalendar.Component", {
         metadata: {
             manifest: "json"
         },

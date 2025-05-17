@@ -11,7 +11,7 @@ sap.ui.define([
 ], (BaseController, JSONModel, formatter, models, DateFormat, MessageBox, AuthService, SessionManager, BusyIndicator) => {
     "use strict";
 
-    return BaseController.extend("com.employeecalendar.controller.Main", {
+    return BaseController.extend("ui5.employeecalendar.controller.Main", {
         formatter: formatter,
 
         /**

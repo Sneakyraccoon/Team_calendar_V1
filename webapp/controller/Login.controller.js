@@ -5,10 +5,10 @@ sap.ui.define([
     "sap/ui/core/BusyIndicator",
     "../service/AuthService",
     "../utils/SessionManager"
-], (BaseController, JSONModel, MessageBox, BusyIndicator, AuthService, SessionManager) => {
+], function (BaseController, JSONModel, MessageBox, BusyIndicator, AuthService, SessionManager) {
     "use strict";
 
-    return BaseController.extend("com.employeecalendar.controller.Login", {
+    return BaseController.extend("ui5.employeecalendar.controller.Login", {
         /**
          * Called when the controller is instantiated
          * @public
@@ -76,7 +76,8 @@ sap.ui.define([
                     
                     if (oResponse.success) {
                         // Store user data in session
-                        SessionManager.login(oResponse.user, bRememberMe);
+                       // SessionManager.login(oResponse.user, bRememberMe);
+                        SessionManager.setUserData(oResponse.user, bRememberMe);
                         
                         // Update session model
                         const oSessionModel = this.getModel("session");
