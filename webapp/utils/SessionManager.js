@@ -3,181 +3,105 @@ sap.ui.define([
 ], (Log) => {
     "use strict";
 
+    const SESSION_KEY = "employeeCalendar.session";
+    
     /**
      * Session manager utility
      * @namespace
      */
     const SessionManager = {
         /**
-         * Store Session Key
-         * @type {string}
-         * @private
-         */
-        _storageKey: "employeeCalendarSession",
-        
-        /**
-         * Session Timeout in milliseconds (30 minutes)
-         * @type {number}
-         * @private
-         */
-        _sessionTimeout: 30 * 60 * 1000,
-        
-        /**
          * Check if user is logged in
-         * @returns {boolean} Login status
+         * @returns {boolean} True if user is logged in
          * @public
          */
         isLoggedIn() {
-            const oSessionData = this._getSessionData();
-            
-            if (!oSessionData) {
-                return false;
-            }
-            
-            // Check if session has expired
-            const iCurrentTime = new Date().getTime();
-            if (oSessionData.expiresAt && iCurrentTime > oSessionData.expiresAt) {
-                this.logout();
-                return false;
-            }
-            
-            return true;
+            const sessionData = this._getSessionData();
+            return !!sessionData && !!sessionData.user;
         },
-        
-        /**
-         * Login user
-         * @param {object} oUserData - User data to store in session
-         * @param {boolean} bRememberMe - Whether to remember the session after browser is closed
-         * @public
-         */
-        login(oUserData, bRememberMe) {
-            // Calculate expiry time
-            const iCurrentTime = new Date().getTime();
-            const iExpiryTime = iCurrentTime + this._sessionTimeout;
-            
-            // Create session data
-            const oSessionData = {
-                user: oUserData,
-                expiresAt: iExpiryTime,
-                rememberMe: bRememberMe
-            };
-            
-            // Store session
-            this._storeSessionData(oSessionData, bRememberMe);
-            
-            // Start session timeout
-            this._startSessionTimeout();
-        },
-        
+
         /**
          * Get user data from session
-         * @returns {object|null} User data or null if not logged in
+         * @returns {object} User data
          * @public
          */
         getUserData() {
-            const oSessionData = this._getSessionData();
-            return oSessionData ? oSessionData.user : null;
+            const sessionData = this._getSessionData();
+            return sessionData ? sessionData.user : null;
         },
-        
+
         /**
-         * Logout user and clear session
+         * Set user data in session
+         * @param {object} userData User data to store
+         * @param {boolean} rememberMe Whether to persist the session
+         * @public
+         */
+        setUserData(userData, rememberMe) {
+            const sessionData = {
+                user: userData,
+                timestamp: new Date().getTime(),
+                rememberMe: rememberMe
+            };
+            
+            if (rememberMe) {
+                localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+            } else {
+                sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+            }
+        },
+
+        /**
+         * Clear session data and log out user
          * @public
          */
         logout() {
-            // Clear session storage
-            sessionStorage.removeItem(this._storageKey);
-            
-            // Clear local storage
-            localStorage.removeItem(this._storageKey);
+            this.clearSession();
         },
-        
+
         /**
-         * Refresh session (update expiry time)
+         * Clear session data
          * @public
          */
-        refreshSession() {
-            const oSessionData = this._getSessionData();
-            
-            if (oSessionData) {
-                // Update expiry time
-                const iCurrentTime = new Date().getTime();
-                oSessionData.expiresAt = iCurrentTime + this._sessionTimeout;
-                
-                // Store updated session
-                this._storeSessionData(oSessionData, oSessionData.rememberMe);
-            }
+        clearSession() {
+            localStorage.removeItem(SESSION_KEY);
+            sessionStorage.removeItem(SESSION_KEY);
         },
-        
+
         /**
          * Get session data from storage
-         * @returns {object|null} Session data or null if not exists
+         * @returns {object} Session data
          * @private
          */
         _getSessionData() {
-            // Try to get from session storage first
-            let sSessionData = sessionStorage.getItem(this._storageKey);
+            let sessionData = JSON.parse(sessionStorage.getItem(SESSION_KEY));
             
-            // If not found, try local storage
-            if (!sSessionData) {
-                sSessionData = localStorage.getItem(this._storageKey);
+            if (!sessionData) {
+                sessionData = JSON.parse(localStorage.getItem(SESSION_KEY));
             }
             
-            if (sSessionData) {
-                try {
-                    return JSON.parse(sSessionData);
-                } catch (oError) {
-                    Log.error("Failed to parse session data", oError);
-                    return null;
-                }
+            if (sessionData && this._isSessionExpired(sessionData)) {
+                this.clearSession();
+                return null;
             }
             
-            return null;
+            return sessionData;
         },
-        
+
         /**
-         * Store session data
-         * @param {object} oSessionData - Session data to store
-         * @param {boolean} bPersist - Whether to persist in local storage
+         * Check if session is expired
+         * @param {object} sessionData Session data to check
+         * @returns {boolean} True if session is expired
          * @private
          */
-        _storeSessionData(oSessionData, bPersist) {
-            const sSessionData = JSON.stringify(oSessionData);
+        _isSessionExpired(sessionData) {
+            const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours
+            const now = new Date().getTime();
             
-            // Always store in session storage
-            sessionStorage.setItem(this._storageKey, sSessionData);
-            
-            // If persist flag is true, also store in local storage
-            if (bPersist) {
-                localStorage.setItem(this._storageKey, sSessionData);
-            }
-        },
-        
-        /**
-         * Start session timeout
-         * @private
-         */
-        _startSessionTimeout() {
-            // Clear any existing timeout
-            if (this._timeoutId) {
-                clearTimeout(this._timeoutId);
+            if (!sessionData.rememberMe && (now - sessionData.timestamp > SESSION_TIMEOUT)) {
+                return true;
             }
             
-            // Calculate time until session expires
-            const oSessionData = this._getSessionData();
-            if (!oSessionData || !oSessionData.expiresAt) {
-                return;
-            }
-            
-            const iCurrentTime = new Date().getTime();
-            const iTimeRemaining = Math.max(0, oSessionData.expiresAt - iCurrentTime);
-            
-            // Set timeout to handle session expiry
-            this._timeoutId = setTimeout(() => {
-                if (!this.isLoggedIn()) {
-                    // Publish session expired event
-                    sap.ui.getCore().getEventBus().publish("session", "expired", {});
-                }
-            }, iTimeRemaining);
+            return false;
         }
     };
     

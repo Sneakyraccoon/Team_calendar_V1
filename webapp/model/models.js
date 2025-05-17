@@ -17,7 +17,7 @@ sap.ui.define([
         },
         
         /**
-         * Creates a session model for user authentication state
+         * Creates a session model
          * @returns {sap.ui.model.json.JSONModel} Session model
          * @public
          */

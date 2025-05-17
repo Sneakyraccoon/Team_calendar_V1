@@ -2,7 +2,7 @@ sap.ui.define([
     "sap/ui/core/UIComponent",
     "sap/ui/Device",
     "./model/models",
-    "./localService/mockserver",
+    "./localservice/mockserver",
     "./utils/SessionManager"
 ], (UIComponent, Device, models, mockserver, SessionManager) => {
     "use strict";

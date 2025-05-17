@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/base/Object",
-    "sap/base/Log"
-], (BaseObject, Log) => {
+    "sap/base/Log",
+    "sap/ui/model/json/JSONModel"
+], (BaseObject, Log, JSONModel) => {
     "use strict";
     
     /**
@@ -22,7 +23,7 @@ sap.ui.define([
          */
         _initService() {
             // Base URL for API
-            this._sBaseUrl = "/backend/api";
+            this._baseUrl = "/backend/api";
             
             // Check if running with mock server
             this._bMockMode = window.location.hostname === "localhost" || 
@@ -31,91 +32,47 @@ sap.ui.define([
         
         /**
          * Authenticate user with credentials
-         * @param {string} sEmployeeId - Employee ID
-         * @param {string} sPassword - Password
+         * @param {string} employeeId - Employee ID
+         * @param {string} password - Password
          * @returns {Promise} Promise resolving with authentication result
          * @public
          */
-        login(sEmployeeId, sPassword) {
+        login(employeeId, password) {
             return new Promise((resolve, reject) => {
-                if (this._bMockMode) {
-                    // In mock mode, use local JSON data
-                    this._mockLogin(sEmployeeId, sPassword)
-                        .then(resolve)
-                        .catch(reject);
-                } else {
-                    // In real mode, call API
-                    const sUrl = `${this._sBaseUrl}/auth/login`;
-                    
-                    fetch(sUrl, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            employeeId: sEmployeeId,
-                            password: sPassword
-                        })
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
+                // In a real app, this would be an actual API call
+                // For now, we're using the mock server
+                jQuery.ajax({
+                    url: `${this._baseUrl}/auth/login`,
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        employeeId: employeeId,
+                        password: password
+                    }),
+                    success: (response) => {
+                        if (response.success) {
+                            resolve(response);
+                        } else {
+                            reject(new Error(response.message || "Login failed"));
                         }
-                        throw new Error("Login failed");
-                    })
-                    .then(data => {
-                        resolve(data);
-                    })
-                    .catch(error => {
-                        Log.error("Login failed", error);
-                        reject(error);
-                    });
-                }
+                    },
+                    error: (xhr, status, error) => {
+                        reject(new Error(error));
+                    }
+                });
             });
         },
         
         /**
-         * Performs mock login with local data
-         * @param {string} sEmployeeId - Employee ID
-         * @param {string} sPassword - Password
-         * @returns {Promise} Promise resolving with authentication result
-         * @private
+         * Logout user
+         * @returns {Promise} Promise resolving when logout is complete
+         * @public
          */
-        _mockLogin(sEmployeeId, sPassword) {
-            return new Promise((resolve, reject) => {
-                // Simulate network delay
-                setTimeout(() => {
-                    // Load users.json
-                    fetch(sap.ui.require.toUrl("com/employeecalendar/localservice/mockdata/users.json"))
-                        .then(response => response.json())
-                        .then(aUsers => {
-                            // Find user with matching credentials
-                            const oUser = aUsers.find(user => 
-                                user.employeeId === sEmployeeId && 
-                                user.password === sPassword
-                            );
-                            
-                            if (oUser) {
-                                // Clone user object and remove password
-                                const oUserData = { ...oUser };
-                                delete oUserData.password;
-                                
-                                resolve({
-                                    success: true,
-                                    user: oUserData
-                                });
-                            } else {
-                                resolve({
-                                    success: false,
-                                    message: "Invalid employee ID or password"
-                                });
-                            }
-                        })
-                        .catch(error => {
-                            Log.error("Error loading mock users", error);
-                            reject(error);
-                        });
-                }, 1000);
+        logout() {
+            return new Promise((resolve) => {
+                // In a real app, this would be an actual API call
+                // For now, we just resolve immediately
+                resolve();
             });
         },
         
@@ -128,7 +85,7 @@ sap.ui.define([
             return new Promise((resolve, reject) => {
                 const sUrl = this._bMockMode ? 
                     sap.ui.require.toUrl("com/employeecalendar/localservice/mockdata/employees.json") : 
-                    `${this._sBaseUrl}/employees`;
+                    `${this._baseUrl}/employees`;
                 
                 fetch(sUrl)
                     .then(response => {
@@ -167,7 +124,7 @@ sap.ui.define([
                     const sStartDate = oStartDate.toISOString().split("T")[0];
                     const sEndDate = oEndDate.toISOString().split("T")[0];
                     
-                    const sUrl = `${this._sBaseUrl}/schedules?employeeId=${sEmployeeId}&startDate=${sStartDate}&endDate=${sEndDate}`;
+                    const sUrl = `${this._baseUrl}/schedules?employeeId=${sEmployeeId}&startDate=${sStartDate}&endDate=${sEndDate}`;
                     
                     fetch(sUrl)
                         .then(response => {
