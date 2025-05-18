@@ -8,50 +8,40 @@
     
     <Page id="launchpadPage" title="{i18n>launchpadTitle}" showNavButton="false">
         <content>
-            <FlexBox
-                height="100%"
-                alignItems="Center"
-                justifyContent="Center">
+            <HBox class="sapUiTinyMargin" renderType="Bare">
+                <!-- Calendar Tile -->
+                <GenericTile
+                    header="{i18n>calendarTileTitle}"
+                    subheader="{i18n>calendarTileSubtitle}"
+                    press="onCalendarTilePress"
+                    class="tileLayout">
+                    <TileContent>
+                        <ImageContent src="sap-icon://calendar"/>
+                    </TileContent>
+                </GenericTile>
                 
-                <l:Grid
-                    defaultSpan="XL3 L3 M6 S12"
-                    class="sapUiSmallMargin">
-                    
-                    <!-- Calendar Tile -->
-                    <GenericTile
-                        header="{i18n>calendarTileTitle}"
-                        subheader="{i18n>calendarTileSubtitle}"
-                        press="onCalendarTilePress"
-                        class="sapUiSmallMargin">
-                        <TileContent>
-                            <ImageContent src="sap-icon://calendar"/>
-                        </TileContent>
-                    </GenericTile>
-                    
-                    <!-- Profile Tile -->
-                    <GenericTile
-                        header="{i18n>profileTileTitle}"
-                        subheader="{session>/user/name}"
-                        press="onProfileTilePress"
-                        class="sapUiSmallMargin">
-                        <TileContent>
-                            <ImageContent src="sap-icon://employee"/>
-                        </TileContent>
-                    </GenericTile>
-                    
-                    <!-- Settings Tile -->
-                    <GenericTile
-                        header="{i18n>settingsTileTitle}"
-                        subheader="{i18n>settingsTileSubtitle}"
-                        press="onSettingsTilePress"
-                        class="sapUiSmallMargin">
-                        <TileContent>
-                            <ImageContent src="sap-icon://settings"/>
-                        </TileContent>
-                    </GenericTile>
-                    
-                </l:Grid>
-            </FlexBox>
+                <!-- Profile Tile -->
+                <GenericTile
+                    header="{i18n>profileTileTitle}"
+                    subheader="{session>/user/name}"
+                    press="onProfileTilePress"
+                    class="tileLayout">
+                    <TileContent>
+                        <ImageContent src="sap-icon://employee"/>
+                    </TileContent>
+                </GenericTile>
+                
+                <!-- Settings Tile -->
+                <GenericTile
+                    header="{i18n>settingsTileTitle}"
+                    subheader="{i18n>settingsTileSubtitle}"
+                    press="onSettingsTilePress"
+                    class="tileLayout">
+                    <TileContent>
+                        <ImageContent src="sap-icon://settings"/>
+                    </TileContent>
+                </GenericTile>
+            </HBox>
         </content>
         
         <footer>

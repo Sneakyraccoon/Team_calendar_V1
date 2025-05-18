@@ -182,6 +182,48 @@ sap.ui.define([
             
             // Load schedules for selected employee
             this._loadSchedules();
+        },
+
+        /**
+         * Handler for back navigation to Launchpad
+         * @public
+         */
+        onNavBack() {
+            this.getRouter().navTo("launchpad");
+        },
+
+        /**
+         * Handler for view selection in IconTabBar
+         * @param {sap.ui.base.Event} oEvent Event object
+         * @public
+         */
+        onViewSelect(oEvent) {
+            const sKey = oEvent.getParameter("key");
+            const oViewModel = this.getModel("view") || new JSONModel({
+                currentView: sKey
+            });
+            
+            if (!this.getModel("view")) {
+                this.setModel(oViewModel, "view");
+            } else {
+                oViewModel.setProperty("/currentView", sKey);
+            }
+            
+            // Update view based on selection
+            switch(sKey) {
+                case "multiDay":
+                    // Logic for multi-day view
+                    break;
+                case "multiPerson":
+                    // Logic for multi-person view
+                    break;
+                case "oneDay":
+                    // Logic for one-day view
+                    break;
+                case "team":
+                    // Logic for team view
+                    break;
+            }
         }
     });
 });

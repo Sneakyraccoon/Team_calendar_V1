@@ -9,158 +9,187 @@
     xmlns:form="sap.ui.layout.form"
     height="100%">
     
-    <Page id="mainPage" title="{i18n>appTitle}">
+    <Page id="mainPage" title="{i18n>appTitle}" showNavButton="true" navButtonPress="onNavBack">
         <content>
-            <l:ResponsiveSplitter id="mainSplitter" defaultPane="employeeContent">
-                <l:PaneContainer>
-                    <l:SplitPane id="calendarPane" requiredParentWidth="800" class="leftPanel">
-                        <VBox class="sapUiSmallMargin">
-                            <!-- Calendar Panel -->
-                            <Panel headerText="{i18n>calendarTitle}" expandable="true" expanded="true">
-                                <unified:Calendar
-                                    id="employeeCalendar"
-                                    intervalSelection="true"
-                                    singleSelection="false"
-                                    startDate="{calendar>/startDate}"
-                                    select="onCalendarSelect">
-                                </unified:Calendar>
-                                
-                                <HBox class="sapUiSmallMarginTop">
-                                    <Label text="{i18n>dateRangeLabel}:" class="sapUiTinyMarginEnd" />
-                                    <Text text="{
-                                        parts: [
-                                            {path: 'calendar>/startDate'},
-                                            {path: 'calendar>/endDate'}
-                                        ],
-                                        formatter: '.formatDateRange'
-                                    }" />
-                                </HBox>
-                            </Panel>
-                            
-                            <!-- Employee List Panel -->
-                            <Panel headerText="{i18n>employeesTitle}" expandable="true" expanded="true" class="sapUiSmallMarginTop">
-                                <List
-                                    id="employeeList"
-                                    items="{employee>/employees}"
-                                    mode="SingleSelectMaster"
-                                    selectionChange="onEmployeePress"
-                                    class="employeeList">
-                                    <ObjectListItem
-                                        title="{employee>name}"
-                                        type="Active"
-                                        press="onEmployeePress"
-                                        icon="sap-icon://employee">
-                                        <attributes>
-                                            <ObjectAttribute text="{employee>position}" />
-                                            <ObjectAttribute text="{employee>department}" />
-                                        </attributes>
-                                    </ObjectListItem>
-                                </List>
-                            </Panel>
-                        </VBox>
-                    </l:SplitPane>
-                    
-                    <l:SplitPane id="employeeContent" demandPane="true">
-                        <VBox class="sapUiSmallMargin">
-                            <!-- Employee Information -->
-                            <Panel 
-                                headerText="{i18n>employeeInfoTitle}" 
-                                visible="{= !!${employee>/selectedEmployee}}">
-                                <form:SimpleForm
-                                    editable="false"
-                                    layout="ResponsiveGridLayout"
-                                    labelSpanXL="4"
-                                    labelSpanL="4"
-                                    labelSpanM="4"
-                                    labelSpanS="12">
-                                    <form:content>
-                                        <Label text="{i18n>employeeIdLabel}" />
-                                        <Text text="{employee>/selectedEmployee/id}" />
+            <IconTabBar
+                id="viewSelectionBar"
+                select="onViewSelect"
+                selectedKey="multiDay"
+                class="sapUiResponsiveContentPadding">
+                <items>
+                    <IconTabFilter
+                        key="multiDay"
+                        text="Multi-day view"
+                        icon="sap-icon://calendar">
+                    </IconTabFilter>
+                    <IconTabFilter
+                        key="multiPerson"
+                        text="Multi-person view"
+                        icon="sap-icon://group">
+                    </IconTabFilter>
+                    <IconTabFilter
+                        key="oneDay"
+                        text="One-day view"
+                        icon="sap-icon://appointment">
+                    </IconTabFilter>
+                    <IconTabFilter
+                        key="team"
+                        text="Team view"
+                        icon="sap-icon://team-calendar">
+                    </IconTabFilter>
+                </items>
+                <content>
+                    <l:ResponsiveSplitter id="mainSplitter" defaultPane="employeeContent">
+                        <l:PaneContainer>
+                            <l:SplitPane id="calendarPane" requiredParentWidth="800" class="leftPanel">
+                                <VBox class="sapUiSmallMargin">
+                                    <!-- Calendar Panel -->
+                                    <Panel headerText="{i18n>calendarTitle}" expandable="true" expanded="true">
+                                        <unified:Calendar
+                                            id="employeeCalendar"
+                                            intervalSelection="true"
+                                            singleSelection="false"
+                                            select="onCalendarSelect">
+                                        </unified:Calendar>
                                         
-                                        <Label text="{i18n>positionLabel}" />
-                                        <Text text="{employee>/selectedEmployee/position}" />
-                                        
-                                        <Label text="{i18n>departmentLabel}" />
-                                        <Text text="{employee>/selectedEmployee/department}" />
-                                        
-                                        <Label text="{i18n>managerLabel}" />
-                                        <Text text="{employee>/selectedEmployee/manager}" />
-                                    </form:content>
-                                </form:SimpleForm>
-                            </Panel>
+                                        <HBox class="sapUiSmallMarginTop">
+                                            <Label text="{i18n>dateRangeLabel}:" class="sapUiTinyMarginEnd" />
+                                            <Text text="{
+                                                parts: [
+                                                    {path: 'calendar>/startDate'},
+                                                    {path: 'calendar>/endDate'}
+                                                ],
+                                                formatter: '.formatDateRange'
+                                            }" />
+                                        </HBox>
+                                    </Panel>
+                                    
+                                    <!-- Employee List Panel -->
+                                    <Panel headerText="{i18n>employeesTitle}" expandable="true" expanded="true" class="sapUiSmallMarginTop">
+                                        <List
+                                            id="employeeList"
+                                            items="{employee>/employees}"
+                                            mode="SingleSelectMaster"
+                                            selectionChange="onEmployeePress"
+                                            class="employeeList">
+                                            <ObjectListItem
+                                                title="{employee>name}"
+                                                type="Active"
+                                                press="onEmployeePress"
+                                                icon="sap-icon://employee">
+                                                <attributes>
+                                                    <ObjectAttribute text="{employee>position}" />
+                                                    <ObjectAttribute text="{employee>department}" />
+                                                </attributes>
+                                            </ObjectListItem>
+                                        </List>
+                                    </Panel>
+                                </VBox>
+                            </l:SplitPane>
                             
-                            <!-- Schedule Table -->
-                            <Panel 
-                                headerText="{i18n>scheduleTitle}" 
-                                class="sapUiSmallMarginTop"
-                                visible="{= !!${employee>/selectedEmployee}}">
-                                <Table
-                                    id="scheduleTable"
-                                    items="{employee>/schedules}"
-                                    noDataText="{i18n>noScheduleDataText}">
-                                    <columns>
-                                        <Column>
-                                            <Text text="{i18n>startDateLabel}" />
-                                        </Column>
-                                        <Column>
-                                            <Text text="{i18n>endDateLabel}" />
-                                        </Column>
-                                        <Column>
-                                            <Text text="{i18n>statusLabel}" />
-                                        </Column>
-                                        <Column>
-                                            <Text text="{i18n>descriptionLabel}" />
-                                        </Column>
-                                        <Column>
-                                            <Text text="{i18n>hoursLabel}" />
-                                        </Column>
-                                        <Column>
-                                            <Text text="{i18n>locationLabel}" />
-                                        </Column>
-                                    </columns>
-                                    <items>
-                                        <ColumnListItem>
-                                            <cells>
-                                                <Text text="{
-                                                    path: 'employee>startDate',
-                                                    formatter: '.formatter.formatDate'
-                                                }" />
-                                                <Text text="{
-                                                    path: 'employee>endDate',
-                                                    formatter: '.formatter.formatDate'
-                                                }" />
-                                                <ObjectStatus
-                                                    text="{employee>status}"
-                                                    state="{
-                                                        path: 'employee>status',
-                                                        formatter: '.formatter.statusState'
-                                                    }"
-                                                    icon="{
-                                                        path: 'employee>status',
-                                                        formatter: '.formatter.statusIcon'
-                                                    }" />
-                                                <Text text="{employee>description}" />
-                                                <Text text="{
-                                                    path: 'employee>hours',
-                                                    formatter: '.formatter.formatHours'
-                                                }" />
-                                                <Text text="{employee>location}" />
-                                            </cells>
-                                        </ColumnListItem>
-                                    </items>
-                                </Table>
-                            </Panel>
-                            
-                            <!-- No Employee Selected Message -->
-                            <MessageStrip
-                                text="{i18n>noEmployeeSelectedText}"
-                                showIcon="true"
-                                class="sapUiLargeMarginTop"
-                                visible="{= !${employee>/selectedEmployee}}" />
-                        </VBox>
-                    </l:SplitPane>
-                </l:PaneContainer>
-            </l:ResponsiveSplitter>
+                            <l:SplitPane id="employeeContent" demandPane="true">
+                                <VBox class="sapUiSmallMargin">
+                                    <!-- Employee Information -->
+                                    <Panel 
+                                        headerText="{i18n>employeeInfoTitle}" 
+                                        visible="{= !!${employee>/selectedEmployee}}">
+                                        <form:SimpleForm
+                                            editable="false"
+                                            layout="ResponsiveGridLayout"
+                                            labelSpanXL="4"
+                                            labelSpanL="4"
+                                            labelSpanM="4"
+                                            labelSpanS="12">
+                                            <form:content>
+                                                <Label text="{i18n>employeeIdLabel}" />
+                                                <Text text="{employee>/selectedEmployee/id}" />
+                                                
+                                                <Label text="{i18n>positionLabel}" />
+                                                <Text text="{employee>/selectedEmployee/position}" />
+                                                
+                                                <Label text="{i18n>departmentLabel}" />
+                                                <Text text="{employee>/selectedEmployee/department}" />
+                                                
+                                                <Label text="{i18n>managerLabel}" />
+                                                <Text text="{employee>/selectedEmployee/manager}" />
+                                            </form:content>
+                                        </form:SimpleForm>
+                                    </Panel>
+                                    
+                                    <!-- Schedule Table -->
+                                    <Panel 
+                                        headerText="{i18n>scheduleTitle}" 
+                                        class="sapUiSmallMarginTop"
+                                        visible="{= !!${employee>/selectedEmployee}}">
+                                        <Table
+                                            id="scheduleTable"
+                                            items="{employee>/schedules}"
+                                            noDataText="{i18n>noScheduleDataText}">
+                                            <columns>
+                                                <Column>
+                                                    <Text text="{i18n>startDateLabel}" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>endDateLabel}" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>statusLabel}" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>descriptionLabel}" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>hoursLabel}" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>locationLabel}" />
+                                                </Column>
+                                            </columns>
+                                            <items>
+                                                <ColumnListItem>
+                                                    <cells>
+                                                        <Text text="{
+                                                            path: 'employee>startDate',
+                                                            formatter: '.formatter.formatDate'
+                                                        }" />
+                                                        <Text text="{
+                                                            path: 'employee>endDate',
+                                                            formatter: '.formatter.formatDate'
+                                                        }" />
+                                                        <ObjectStatus
+                                                            text="{employee>status}"
+                                                            state="{
+                                                                path: 'employee>status',
+                                                                formatter: '.formatter.statusState'
+                                                            }"
+                                                            icon="{
+                                                                path: 'employee>status',
+                                                                formatter: '.formatter.statusIcon'
+                                                            }" />
+                                                        <Text text="{employee>description}" />
+                                                        <Text text="{
+                                                            path: 'employee>hours',
+                                                            formatter: '.formatter.formatHours'
+                                                        }" />
+                                                        <Text text="{employee>location}" />
+                                                    </cells>
+                                                </ColumnListItem>
+                                            </items>
+                                        </Table>
+                                    </Panel>
+                                    
+                                    <!-- No Employee Selected Message -->
+                                    <MessageStrip
+                                        text="{i18n>noEmployeeSelectedText}"
+                                        showIcon="true"
+                                        class="sapUiLargeMarginTop"
+                                        visible="{= !${employee>/selectedEmployee}}" />
+                                </VBox>
+                            </l:SplitPane>
+                        </l:PaneContainer>
+                    </l:ResponsiveSplitter>
+                </content>
+            </IconTabBar>
         </content>
         
         <footer>
