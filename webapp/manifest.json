@@ -79,13 +79,19 @@
 				"path": "ui5.employeecalendar.view",
 				"controlId": "app",
 				"controlAggregation": "pages",
-				"async": true
+				"async": true,
+				"clearControlAggregation": false
 			},
 			"routes": [
 				{
 					"pattern": "",
 					"name": "login",
 					"target": "login"
+				},
+				{
+					"pattern": "launchpad",
+					"name": "launchpad",
+					"target": "launchpad"
 				},
 				{
 					"pattern": "main",
@@ -96,11 +102,18 @@
 			"targets": {
 				"login": {
 					"viewName": "Login",
-					"viewLevel": 0
+					"viewLevel": 0,
+					"viewId": "loginView"
+				},
+				"launchpad": {
+					"viewName": "Launchpad",
+					"viewLevel": 1,
+					"viewId": "launchpadView"
 				},
 				"main": {
 					"viewName": "Main",
-					"viewLevel": 1
+					"viewLevel": 2,
+					"viewId": "mainView"
 				}
 			}
 		},

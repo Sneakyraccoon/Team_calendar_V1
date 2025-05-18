@@ -76,7 +76,6 @@ sap.ui.define([
                     
                     if (oResponse.success) {
                         // Store user data in session
-                       // SessionManager.login(oResponse.user, bRememberMe);
                         SessionManager.setUserData(oResponse.user, bRememberMe);
                         
                         // Update session model
@@ -84,8 +83,8 @@ sap.ui.define([
                         oSessionModel.setProperty("/user", oResponse.user);
                         oSessionModel.setProperty("/isLoggedIn", true);
                         
-                        // Navigate to main view
-                        this.getRouter().navTo("main", {}, true);
+                        // Navigate to launchpad view
+                        this.getRouter().navTo("launchpad", {}, true);
                     } else {
                         // Display error message
                         const sErrorMessage = oResponse.message || 
