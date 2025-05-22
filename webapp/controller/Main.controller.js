@@ -200,7 +200,9 @@ sap.ui.define([
         onViewSelect(oEvent) {
             const sKey = oEvent.getParameter("key");
             const oViewModel = this.getModel("view") || new JSONModel({
-                currentView: sKey
+                currentView: sKey,
+                showMultiSelect: false,
+                showDatePicker: true
             });
             
             if (!this.getModel("view")) {
@@ -209,21 +211,185 @@ sap.ui.define([
                 oViewModel.setProperty("/currentView", sKey);
             }
             
+            // Update employee list selection mode based on view
+            const oEmployeeList = this.byId("employeeList");
+            if (oEmployeeList) {
+                oEmployeeList.setMode(sKey === "multiPerson" ? "MultiSelect" : "SingleSelectMaster");
+            }
+
+            // Update calendar selection mode based on view
+            const oCalendar = this.byId("employeeCalendar");
+            if (oCalendar) {
+                oCalendar.setSingleSelection(sKey === "oneDay" || sKey === "multiPerson");
+            }
+            
             // Update view based on selection
             switch(sKey) {
                 case "multiDay":
-                    // Logic for multi-day view
+                    this._handleMultiDayView();
                     break;
                 case "multiPerson":
-                    // Logic for multi-person view
+                    this._handleMultiPersonView();
                     break;
                 case "oneDay":
-                    // Logic for one-day view
+                    this._handleOneDayView();
                     break;
                 case "team":
-                    // Logic for team view
+                    this._handleTeamView();
                     break;
             }
+        },
+
+        /**
+         * Handle Multi-day view for single employee
+         * @private
+         */
+        _handleMultiDayView() {
+            const oEmployeeModel = this.getModel("employee");
+            const oSelectedEmployee = oEmployeeModel.getProperty("/selectedEmployee");
+            
+            if (oSelectedEmployee) {
+                this._loadSchedules();
+            }
+        },
+
+        /**
+         * Handle Multi-person view for one day
+         * @private
+         */
+        _handleMultiPersonView() {
+            const oCalendarModel = this.getModel("calendar");
+            const oStartDate = oCalendarModel.getProperty("/startDate");
+            
+            if (oStartDate) {
+                // Set end date same as start date for one-day view
+                oCalendarModel.setProperty("/endDate", oStartDate);
+                
+                // Load schedules for all selected employees
+                this._loadMultiPersonSchedules();
+            }
+        },
+
+        /**
+         * Handle One-day view for single employee
+         * @private
+         */
+        _handleOneDayView() {
+            const oCalendarModel = this.getModel("calendar");
+            const oEmployeeModel = this.getModel("employee");
+            const oSelectedEmployee = oEmployeeModel.getProperty("/selectedEmployee");
+            const oStartDate = oCalendarModel.getProperty("/startDate");
+            
+            if (oSelectedEmployee && oStartDate) {
+                // Set end date same as start date for one-day view
+                oCalendarModel.setProperty("/endDate", oStartDate);
+                this._loadSchedules();
+            }
+        },
+
+        /**
+         * Handle Team view
+         * @private
+         */
+        _handleTeamView() {
+            const oEmployeeModel = this.getModel("employee");
+            const oSelectedEmployee = oEmployeeModel.getProperty("/selectedEmployee");
+            
+            if (oSelectedEmployee) {
+                // Load team members based on selected employee's department
+                this._loadTeamMembers(oSelectedEmployee.department);
+            }
+        },
+
+        /**
+         * Load schedules for multiple employees
+         * @private
+         */
+        _loadMultiPersonSchedules() {
+            const oEmployeeList = this.byId("employeeList");
+            const aSelectedItems = oEmployeeList.getSelectedItems();
+            const oCalendarModel = this.getModel("calendar");
+            const oStartDate = oCalendarModel.getProperty("/startDate");
+            const oEndDate = oCalendarModel.getProperty("/endDate");
+            
+            if (aSelectedItems.length > 0 && oStartDate && oEndDate) {
+                BusyIndicator.show(0);
+                
+                const aPromises = aSelectedItems.map(oItem => {
+                    const oEmployee = oItem.getBindingContext("employee").getObject();
+                    return this._oAuthService.getSchedules(oEmployee.id, oStartDate, oEndDate);
+                });
+                
+                Promise.all(aPromises)
+                    .then(aResults => {
+                        // Combine all schedules with employee information
+                        const aSchedules = aResults.reduce((acc, aEmployeeSchedules, index) => {
+                            const oEmployee = aSelectedItems[index].getBindingContext("employee").getObject();
+                            return acc.concat(aEmployeeSchedules.map(schedule => ({
+                                ...schedule,
+                                employeeName: oEmployee.name,
+                                employeeId: oEmployee.id
+                            })));
+                        }, []);
+                        
+                        const oEmployeeModel = this.getModel("employee");
+                        oEmployeeModel.setProperty("/schedules", aSchedules);
+                        BusyIndicator.hide();
+                    })
+                    .catch(oError => {
+                        BusyIndicator.hide();
+                        MessageBox.error("Failed to load schedules");
+                    });
+            }
+        },
+
+        /**
+         * Load team members based on department
+         * @param {string} sDepartment Department name
+         * @private
+         */
+        _loadTeamMembers(sDepartment) {
+            BusyIndicator.show(0);
+            
+            this._oAuthService.getTeamMembers(sDepartment)
+                .then(aTeamMembers => {
+                    const oEmployeeModel = this.getModel("employee");
+                    oEmployeeModel.setProperty("/teamMembers", aTeamMembers);
+                    
+                    // Load schedules for all team members
+                    const oCalendarModel = this.getModel("calendar");
+                    const oStartDate = oCalendarModel.getProperty("/startDate");
+                    const oEndDate = oCalendarModel.getProperty("/endDate");
+                    
+                    if (oStartDate && oEndDate) {
+                        return Promise.all(aTeamMembers.map(oMember => 
+                            this._oAuthService.getSchedules(oMember.id, oStartDate, oEndDate)
+                        ));
+                    }
+                })
+                .then(aSchedules => {
+                    if (aSchedules) {
+                        const oEmployeeModel = this.getModel("employee");
+                        const aTeamMembers = oEmployeeModel.getProperty("/teamMembers");
+                        
+                        // Combine schedules with employee information
+                        const aCombinedSchedules = aSchedules.reduce((acc, aEmployeeSchedules, index) => {
+                            const oEmployee = aTeamMembers[index];
+                            return acc.concat(aEmployeeSchedules.map(schedule => ({
+                                ...schedule,
+                                employeeName: oEmployee.name,
+                                employeeId: oEmployee.id
+                            })));
+                        }, []);
+                        
+                        oEmployeeModel.setProperty("/schedules", aCombinedSchedules);
+                    }
+                    BusyIndicator.hide();
+                })
+                .catch(oError => {
+                    BusyIndicator.hide();
+                    MessageBox.error("Failed to load team data");
+                });
         }
     });
 });

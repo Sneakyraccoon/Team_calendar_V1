@@ -123,14 +123,21 @@
                                         visible="{= !!${employee>/selectedEmployee}}">
                                         <Table
                                             id="scheduleTable"
-                                            items="{employee>/schedules}"
+                                            items="{
+                                                path: 'employee>/schedules',
+                                                sorter: {
+                                                    path: 'startDate',
+                                                    descending: false
+                                                }
+                                            }"
                                             noDataText="{i18n>noScheduleDataText}">
                                             <columns>
-                                                <Column>
-                                                    <Text text="{i18n>startDateLabel}" />
+                                                <Column 
+                                                    visible="{= ${view>/currentView} === 'multiPerson' || ${view>/currentView} === 'team'}">
+                                                    <Text text="{i18n>employeeNameLabel}" />
                                                 </Column>
                                                 <Column>
-                                                    <Text text="{i18n>endDateLabel}" />
+                                                    <Text text="{i18n>dateLabel}" />
                                                 </Column>
                                                 <Column>
                                                     <Text text="{i18n>statusLabel}" />
@@ -148,12 +155,11 @@
                                             <items>
                                                 <ColumnListItem>
                                                     <cells>
+                                                        <Text
+                                                            text="{employee>employeeName}"
+                                                            visible="{= ${view>/currentView} === 'multiPerson' || ${view>/currentView} === 'team'}" />
                                                         <Text text="{
                                                             path: 'employee>startDate',
-                                                            formatter: '.formatter.formatDate'
-                                                        }" />
-                                                        <Text text="{
-                                                            path: 'employee>endDate',
                                                             formatter: '.formatter.formatDate'
                                                         }" />
                                                         <ObjectStatus
