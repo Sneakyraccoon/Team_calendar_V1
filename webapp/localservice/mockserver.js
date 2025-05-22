@@ -73,39 +73,63 @@ sap.ui.define([
                     path: "schedules",
                     response: (oXhr) => {
                         const sEmployeeId = oXhr.url.split("employeeId=")[1]?.split("&")[0];
-                        const sStartDate = oXhr.url.split("startDate=")[1]?.split("&")[0];
-                        const sEndDate = oXhr.url.split("endDate=")[1]?.split("&")[0];
+                        const sStartDate = decodeURIComponent(oXhr.url.split("startDate=")[1]?.split("&")[0] || "");
+                        const sEndDate = decodeURIComponent(oXhr.url.split("endDate=")[1]?.split("&")[0] || "");
                         
                         if (!sEmployeeId || !sStartDate || !sEndDate) {
-                            oXhr.respondJSON(400, {}, { success: false, message: "Missing required parameters" });
+                            oXhr.respondJSON(400, {}, { 
+                                success: false, 
+                                message: "Missing required parameters",
+                                details: { employeeId: sEmployeeId, startDate: sStartDate, endDate: sEndDate }
+                            });
                             return true;
                         }
                         
-                        jQuery.ajax({
-                            url: sap.ui.require.toUrl("ui5/employeecalendar/localservice/mockdata/schedules.json"),
-                            dataType: "json",
-                            async: false,
-                            success: (aSchedules) => {
-                                // Filter schedules by employee ID and date range
-                                const aFilteredSchedules = aSchedules.filter(schedule => {
-                                    if (schedule.employeeId !== sEmployeeId) {
-                                        return false;
-                                    }
+                        try {
+                            jQuery.ajax({
+                                url: sap.ui.require.toUrl("ui5/employeecalendar/localservice/mockdata/schedules.json"),
+                                dataType: "json",
+                                async: false,
+                                success: (aSchedules) => {
+                                    // Filter schedules by employee ID and date range
+                                    const aFilteredSchedules = aSchedules.filter(schedule => {
+                                        if (schedule.employeeId !== sEmployeeId) {
+                                            return false;
+                                        }
+                                        
+                                        const dScheduleStart = new Date(schedule.startDate);
+                                        const dScheduleEnd = new Date(schedule.endDate);
+                                        const dRangeStart = new Date(sStartDate);
+                                        const dRangeEnd = new Date(sEndDate);
+                                        
+                                        // Validate dates
+                                        if (isNaN(dScheduleStart.getTime()) || isNaN(dScheduleEnd.getTime()) ||
+                                            isNaN(dRangeStart.getTime()) || isNaN(dRangeEnd.getTime())) {
+                                            return false;
+                                        }
+                                        
+                                        return dScheduleStart <= dRangeEnd && dScheduleEnd >= dRangeStart;
+                                    });
                                     
-                                    const dScheduleStart = new Date(schedule.startDate);
-                                    const dScheduleEnd = new Date(schedule.endDate);
-                                    const dRangeStart = new Date(sStartDate);
-                                    const dRangeEnd = new Date(sEndDate);
-                                    
-                                    return dScheduleStart <= dRangeEnd && dScheduleEnd >= dRangeStart;
-                                });
-                                
-                                oXhr.respondJSON(200, {}, { schedules: aFilteredSchedules });
-                            },
-                            error: () => {
-                                oXhr.respondJSON(500, {}, { success: false, message: "Failed to load schedules data" });
-                            }
-                        });
+                                    oXhr.respondJSON(200, {}, { 
+                                        success: true,
+                                        schedules: aFilteredSchedules 
+                                    });
+                                },
+                                error: () => {
+                                    oXhr.respondJSON(500, {}, { 
+                                        success: false, 
+                                        message: "Failed to load schedules data" 
+                                    });
+                                }
+                            });
+                        } catch (oError) {
+                            oXhr.respondJSON(500, {}, { 
+                                success: false, 
+                                message: "Error processing schedules",
+                                details: oError.message
+                            });
+                        }
                         return true;
                     }
                 }

@@ -88,32 +88,35 @@ sap.ui.define([
         _loadSchedules() {
             const oEmployeeModel = this.getModel("employee");
             const oSelectedEmployee = oEmployeeModel.getProperty("/selectedEmployee");
-            
-            if (!oSelectedEmployee) {
-                return;
-            }
-            
             const oCalendarModel = this.getModel("calendar");
             const oStartDate = oCalendarModel.getProperty("/startDate");
             const oEndDate = oCalendarModel.getProperty("/endDate");
+            
+            if (!oSelectedEmployee || !oStartDate || !oEndDate) {
+                return;
+            }
+            
+            // Ensure we have valid dates
+            if (isNaN(oStartDate.getTime()) || isNaN(oEndDate.getTime())) {
+                MessageBox.error(this.getResourceBundle().getText("invalidDateError"));
+                return;
+            }
             
             BusyIndicator.show(0);
             
             this._oAuthService.getSchedules(oSelectedEmployee.id, oStartDate, oEndDate)
                 .then(aSchedules => {
-                    // Convert dates from string to Date objects
-                    aSchedules.forEach(schedule => {
-                        schedule.startDate = new Date(schedule.startDate);
-                        schedule.endDate = new Date(schedule.endDate);
-                    });
-                    
-                    // Update model
-                    oEmployeeModel.setProperty("/schedules", aSchedules);
+                    if (Array.isArray(aSchedules)) {
+                        oEmployeeModel.setProperty("/schedules", aSchedules);
+                    } else {
+                        oEmployeeModel.setProperty("/schedules", []);
+                    }
                     BusyIndicator.hide();
                 })
                 .catch(oError => {
                     BusyIndicator.hide();
-                    MessageBox.error("Failed to load schedule data");
+                    MessageBox.error(this.getResourceBundle().getText("loadSchedulesError"));
+                    Log.error("Failed to load schedules", oError);
                 });
         },
         
@@ -125,41 +128,51 @@ sap.ui.define([
         onCalendarSelect(oEvent) {
             const oCalendar = oEvent.getSource();
             const aSelectedDates = oCalendar.getSelectedDates();
+            const oViewModel = this.getModel("view");
+            const sCurrentView = oViewModel.getProperty("/currentView");
             
             if (aSelectedDates.length > 0) {
                 const oDateRange = aSelectedDates[0];
                 const oStartDate = oDateRange.getStartDate();
-                const oEndDate = oDateRange.getEndDate() || oStartDate;
                 
-                // Calculate difference in days
-                const iDiffTime = Math.abs(oEndDate.getTime() - oStartDate.getTime());
-                const iDiffDays = Math.ceil(iDiffTime / (1000 * 60 * 60 * 24));
-                
-                // Check if selected range is more than 60 days (2 months)
-                if (iDiffDays > 60) {
-                    // Set end date to be 60 days from start date
-                    const oNewEndDate = new Date(oStartDate);
-                    oNewEndDate.setDate(oStartDate.getDate() + 60);
-                    
-                    // Update date range
-                    oDateRange.setEndDate(oNewEndDate);
-                    
-                    // Update end date in model
-                    const oCalendarModel = this.getModel("calendar");
-                    oCalendarModel.setProperty("/endDate", oNewEndDate);
-                    
-                    // Show message
-                    this.showMessage(this.getResourceBundle().getText("maxDateRangeMessage"));
-                } else {
-                    // Update model with selected dates
-                    const oCalendarModel = this.getModel("calendar");
-                    oCalendarModel.setProperty("/startDate", oStartDate);
-                    oCalendarModel.setProperty("/endDate", oEndDate);
+                // Ensure we have a valid start date
+                if (!oStartDate || isNaN(oStartDate.getTime())) {
+                    MessageBox.error(this.getResourceBundle().getText("invalidDateError"));
+                    return;
                 }
                 
-                // Load schedules for new date range if an employee is selected
+                let oEndDate = oDateRange.getEndDate() || new Date(oStartDate);
+                
+                // For one-day view and multi-person view, force single day selection
+                if (sCurrentView === "oneDay" || sCurrentView === "multiPerson") {
+                    oEndDate = new Date(oStartDate);
+                    oDateRange.setEndDate(oEndDate);
+                } else {
+                    // Calculate difference in days for multi-day view
+                    const iDiffTime = Math.abs(oEndDate.getTime() - oStartDate.getTime());
+                    const iDiffDays = Math.ceil(iDiffTime / (1000 * 60 * 60 * 24));
+                    
+                    // Check if selected range is more than 60 days (2 months)
+                    if (iDiffDays > 60) {
+                        oEndDate = new Date(oStartDate);
+                        oEndDate.setDate(oStartDate.getDate() + 60);
+                        oDateRange.setEndDate(oEndDate);
+                        this.showMessage(this.getResourceBundle().getText("maxDateRangeMessage"));
+                    }
+                }
+                
+                // Update model with selected dates
+                const oCalendarModel = this.getModel("calendar");
+                oCalendarModel.setProperty("/startDate", oStartDate);
+                oCalendarModel.setProperty("/endDate", oEndDate);
+                
+                // Load schedules based on current view
                 const oEmployeeModel = this.getModel("employee");
-                if (oEmployeeModel.getProperty("/selectedEmployee")) {
+                const oSelectedEmployee = oEmployeeModel.getProperty("/selectedEmployee");
+                
+                if (sCurrentView === "multiPerson") {
+                    this._loadMultiPersonSchedules();
+                } else if (oSelectedEmployee) {
                     this._loadSchedules();
                 }
             }
@@ -220,7 +233,17 @@ sap.ui.define([
             // Update calendar selection mode based on view
             const oCalendar = this.byId("employeeCalendar");
             if (oCalendar) {
-                oCalendar.setSingleSelection(sKey === "oneDay" || sKey === "multiPerson");
+                const bSingleSelection = sKey === "oneDay" || sKey === "multiPerson";
+                oCalendar.setSingleSelection(bSingleSelection);
+                oCalendar.setIntervalSelection(!bSingleSelection);
+
+                // Clear selection when switching views
+                oCalendar.removeAllSelectedDates();
+                
+                // Reset the calendar model dates
+                const oCalendarModel = this.getModel("calendar");
+                oCalendarModel.setProperty("/startDate", null);
+                oCalendarModel.setProperty("/endDate", null);
             }
             
             // Update view based on selection
