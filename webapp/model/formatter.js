@@ -1,4 +1,4 @@
-sap.ui.define([], () => {
+sap.ui.define([], function () {
     "use strict";
 
     return {
@@ -50,7 +50,7 @@ sap.ui.define([], () => {
                 case "regular work":
                     return "sap-icon://activity-individual";
                 case "overtime":
-                    return "sap-icon://overtime";
+                    return "sap-icon://time-overtime";
                 case "vacation":
                     return "sap-icon://travel-expense";
                 case "sick":
