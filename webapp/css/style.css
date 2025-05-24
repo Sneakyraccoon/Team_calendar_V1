@@ -102,3 +102,31 @@
     font-size: 1rem;
     opacity: 0.8;
 }
+
+.sapMPageWithHeader.sapMPageWithHeaderContent {
+    top: 2.75rem;
+}
+
+.sapFShellBar {
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.15);
+}
+
+.sapFShellBar .sapFShellBarContainer {
+    padding: 0 1rem;
+}
+
+/* Ensure proper content spacing below ShellBar */
+.sapMPage > .sapMPageHeader + section {
+    top: 2.75rem;
+}
+
+/* Adjust content padding */
+.sapMPage > section > .sapUiMediumMargin {
+    padding-top: 1rem;
+}
+
+/* Ensure proper ShellBar height */
+.sapFShellBar {
+    height: 2.75rem;
+    min-height: 2.75rem;
+}

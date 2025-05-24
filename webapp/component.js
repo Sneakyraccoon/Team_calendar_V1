@@ -3,8 +3,10 @@ sap.ui.define([
     "sap/ui/Device",
     "./model/models",
     "./localservice/mockserver",
-    "./utils/SessionManager"
-], (UIComponent, Device, models, mockserver, SessionManager) => {
+    "./utils/SessionManager",
+    "./service/TileService",
+    "./service/UserService"
+], function (UIComponent, Device, models, mockserver, SessionManager, TileService, UserService) {
     "use strict";
 
     return UIComponent.extend("ui5.employeecalendar.Component", {
@@ -83,6 +85,62 @@ sap.ui.define([
                 }
             }
             return this._sContentDensityClass;
-        }
+        },
+
+/**
+ * Get TileService instance
+ * @returns {ui5.employeecalendar.service.TileService} TileService instance
+ */
+getTileService: function() {
+    if (!this._oTileService) {
+        this._oTileService = new TileService();
+    }
+    return this._oTileService;
+},
+
+/**
+ * Get UserService instance
+ * @returns {ui5.employeecalendar.service.UserService} UserService instance
+ */
+getUserService: function() {
+    if (!this._oUserService) {
+        this._oUserService = new UserService();
+    }
+    return this._oUserService;
+},
+
+/**
+ * Handle logout
+ */
+logout: function() {
+    // Clear session data
+    if (window.ui5 && window.ui5.employeecalendar && window.ui5.employeecalendar.utils && window.ui5.employeecalendar.utils.SessionManager) {
+        window.ui5.employeecalendar.utils.SessionManager.logout();
+    }
+    
+    // Navigate to login page
+    this.getRouter().navTo("login");
+},
+
+/**
+ * Cleanup when component is destroyed
+ */
+destroy: function() {
+    // Cleanup services
+    if (this._oTileService) {
+        this._oTileService.destroy();
+        this._oTileService = null;
+    }
+    
+    if (this._oUserService) {
+        this._oUserService.destroy();
+        this._oUserService = null;
+    }
+    
+    // Call parent destroy
+    UIComponent.prototype.destroy.apply(this, arguments);
+}
+
+
     });
 });

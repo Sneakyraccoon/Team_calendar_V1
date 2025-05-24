@@ -91,12 +91,42 @@
 				{
 					"pattern": "launchpad",
 					"name": "launchpad",
-					"target": "launchpad"
+					"target": "launchpadV2"
 				},
 				{
 					"pattern": "main",
 					"name": "main",
 					"target": "main"
+				},
+				{
+					"pattern": "component/{componentId}",
+					"name": "componentView",
+					"target": "componentView"
+				},
+				{
+					"pattern": "employees",
+					"name": "employeeManagement",
+					"target": "employeeManagement"
+				},
+				{
+					"pattern": "expenses",
+					"name": "expenseReports",
+					"target": "expenseReports"
+				},
+				{
+					"pattern": "tiles/manage",
+					"name": "tileManagement",
+					"target": "tileManagement"
+				},
+				{
+					"pattern": "settings",
+					"name": "settings",
+					"target": "settings"
+				},
+				{
+					"pattern": "profile",
+					"name": "profile",
+					"target": "profile"
 				}
 			],
 			"targets": {
@@ -109,6 +139,11 @@
 					"viewName": "Launchpad",
 					"viewLevel": 1,
 					"viewId": "launchpadView"
+				},
+				"launchpadV2": {
+					"viewName": "LaunchpadV2",
+					"viewLevel": 1,
+					"viewId": "launchpadV2View"
 				},
 				"main": {
 					"viewName": "Main",

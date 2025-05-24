@@ -1,0 +1,435 @@
+/* OpenUI5 Launchpad with GenericTile Styles */
+
+/* Main Launchpad Tile Styling */
+.launchpadTile {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.launchpadTile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.launchpadTile:active {
+    transform: translateY(0);
+}
+
+/* GenericTile Enhancements */
+.sapMGT {
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.sapMGT:hover {
+    border-color: #0070f2;
+    box-shadow: 0 2px 12px rgba(0, 112, 242, 0.15);
+}
+
+.sapMGT:focus {
+    outline: 2px solid #0070f2;
+    outline-offset: 2px;
+}
+
+/* Recent Tiles Styling */
+.recentTile {
+    transition: all 0.2s ease;
+    min-width: 150px;
+}
+
+.recentTile:hover {
+    transform: scale(1.05);
+}
+
+.recentTile .sapMGT {
+    border-radius: 6px;
+}
+
+/* Favorite Tiles Styling */
+.favoriteTile {
+    position: relative;
+}
+
+.favoriteTile::before {
+    content: "★";
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #ff9500;
+    font-size: 16px;
+    z-index: 10;
+    background: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Edit Mode Styling */
+.sapMPage[data-edit-mode="true"] .launchpadTile .sapMGT {
+    position: relative;
+}
+
+.sapMPage[data-edit-mode="true"] .launchpadTile .sapMGT::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px dashed #0070f2;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0.7;
+    z-index: 5;
+}
+
+.sapMPage[data-edit-mode="true"] .launchpadTile .sapMGT::after {
+    content: "✋";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    background: rgba(0, 112, 242, 0.9);
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Search Field Enhancements */
+.sapMSF {
+    border-radius: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sapMSF:focus-within {
+    box-shadow: 0 2px 8px rgba(0, 112, 242, 0.2);
+}
+
+/* Category Filter Styling */
+.sapMSegB .sapMSegBBtn {
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.sapMSegB .sapMSegBBtn:hover {
+    transform: translateY(-1px);
+}
+
+/* Panel Enhancements */
+.sapMPanel {
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 599px) {
+    .launchpadTile .sapMGT {
+        min-height: 140px;
+    }
+    
+    .recentTile {
+        min-width: 120px;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 1023px) {
+    .launchpadTile .sapMGT {
+        min-height: 160px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .launchpadTile .sapMGT {
+        min-height: 180px;
+    }
+}
+
+/* Loading States */
+.tileLoading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.tileLoading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #0070f2;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 20;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Animation for tile appearance */
+.launchpadTile {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Staggered animation for multiple tiles */
+.launchpadTile:nth-child(1) { animation-delay: 0.1s; }
+.launchpadTile:nth-child(2) { animation-delay: 0.2s; }
+.launchpadTile:nth-child(3) { animation-delay: 0.3s; }
+.launchpadTile:nth-child(4) { animation-delay: 0.4s; }
+.launchpadTile:nth-child(5) { animation-delay: 0.5s; }
+.launchpadTile:nth-child(6) { animation-delay: 0.6s; }
+.launchpadTile:nth-child(7) { animation-delay: 0.7s; }
+.launchpadTile:nth-child(8) { animation-delay: 0.8s; }
+
+/* ScrollContainer for recent tiles */
+.sapMScrollCont {
+    border-radius: 8px;
+}
+
+/* Footer Toolbar Styling */
+.sapMTB {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+/* Dark Theme Support */
+.sapUiTheme-sap_horizon_dark .sapMGT {
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.sapUiTheme-sap_horizon_dark .sapMGT:hover {
+    border-color: #4db8ff;
+    box-shadow: 0 2px 12px rgba(77, 184, 255, 0.15);
+}
+
+.sapUiTheme-sap_horizon_dark .sapMPanel {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.sapUiTheme-sap_horizon_dark .sapMSF {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Compact Mode Support */
+.sapUiSizeCompact .launchpadTile .sapMGT {
+    min-height: 120px;
+}
+
+.sapUiSizeCompact .recentTile {
+    min-width: 100px;
+}
+
+.sapUiSizeCompact .favoriteTile::before {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+}
+
+/* High Contrast Theme Support */
+.sapUiTheme-sap_belize_hcb .sapMGT,
+.sapUiTheme-sap_belize_hcw .sapMGT {
+    border-width: 2px;
+}
+
+.sapUiTheme-sap_belize_hcb .sapMGT:hover,
+.sapUiTheme-sap_belize_hcw .sapMGT:hover {
+    border-width: 3px;
+}
+
+/* Tile Content Enhancements */
+.sapMTC {
+    border-radius: 6px;
+}
+
+.sapMGT .sapMTCCnt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+}
+
+/* NumericContent styling within tiles */
+.sapMNC {
+    text-align: center;
+}
+
+.sapMNC .sapMNCValue {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.sapMNC .sapMNCIndicator {
+    margin-left: 8px;
+}
+
+/* ImageContent styling within tiles */
+.sapMIC {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sapMIC .sapUiIcon {
+    font-size: 2.5rem;
+    color: #0070f2;
+}
+
+/* Action Buttons in tiles */
+.sapMGT .sapMBtn {
+    transition: all 0.2s ease;
+}
+
+.sapMGT .sapMBtn:hover {
+    transform: scale(1.1);
+}
+
+/* Drag and Drop Support (for future enhancement) */
+.launchpadTile[draggable="true"] {
+    cursor: move;
+}
+
+.launchpadTile.dragover {
+    border: 2px dashed #0070f2;
+    background-color: rgba(0, 112, 242, 0.05);
+}
+
+/* Error and Loading States */
+.sapMGT.sapMGTFailed {
+    border-color: #bb0000;
+    background-color: rgba(187, 0, 0, 0.05);
+}
+
+.sapMGT.sapMGTLoading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Accessibility Improvements */
+.sapMGT:focus {
+    outline: 2px solid #0070f2;
+    outline-offset: 2px;
+}
+
+.sapMGT[aria-pressed="true"] {
+    transform: scale(0.98);
+}
+
+/* Print Styles */
+@media print {
+    .launchpadTile .sapMGT {
+        break-inside: avoid;
+        border: 1px solid #000;
+        box-shadow: none;
+        transform: none !important;
+    }
+    
+    .sapMBtn,
+    .sapMSegB,
+    .sapMSF {
+        display: none;
+    }
+    
+    .sapMPanel {
+        border: 1px solid #000;
+        box-shadow: none;
+    }
+}
+
+/* Custom animations for different tile states */
+@keyframes tileSuccess {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(16, 126, 62, 0.1); }
+    100% { background-color: transparent; }
+}
+
+@keyframes tileError {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(187, 0, 0, 0.1); }
+    100% { background-color: transparent; }
+}
+
+.sapMGT.success {
+    animation: tileSuccess 1s ease-in-out;
+}
+
+.sapMGT.error {
+    animation: tileError 1s ease-in-out;
+}
+
+/* Tooltip enhancements */
+.sapMGT[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* Custom tile sizes */
+.launchpadTile .sapMGT.tileSize-XS {
+    min-height: 80px;
+    max-height: 80px;
+}
+
+.launchpadTile .sapMGT.tileSize-S {
+    min-height: 120px;
+    max-height: 120px;
+}
+
+.launchpadTile .sapMGT.tileSize-M {
+    min-height: 180px;
+    max-height: 180px;
+}
+
+.launchpadTile .sapMGT.tileSize-L {
+    min-height: 240px;
+    max-height: 240px;
+}
+
+/* Performance optimizations */
+.launchpadTile {
+    will-change: transform, box-shadow;
+}
+
+.sapMGT {
+    will-change: border-color, box-shadow;
+}

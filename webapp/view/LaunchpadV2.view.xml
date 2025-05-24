@@ -1,0 +1,363 @@
+<mvc:View
+    controllerName="ui5.employeecalendar.controller.LaunchpadV2"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns:f="sap.f"
+    displayBlock="true"
+    height="100%">
+    
+    <Page
+        id="launchpadPage"
+        showHeader="false"
+        showNavButton="false"
+        class="sapUiNoContentPadding">
+        
+        <!-- ShellBar -->
+        <f:ShellBar
+            title="{i18n>appTitle}"
+            secondTitle="{/userInfo/description}"
+            showCopilot="false"
+            showSearch="true"
+            showNotifications="true"
+            showProductSwitcher="true"
+            notificationsNumber="{/notificationsCount}"
+            homeIcon="sap-icon://home"
+            showMenuButton="false"
+            backgroundColor="#354A5F">
+            
+            <f:profile>
+                <Avatar
+                    initials="{= ${/userInfo/userName}.substr(0, 2)}"
+                    displaySize="XS"
+                    backgroundColor="#5D84B0"
+                    press="onUserMenuPress"/>
+            </f:profile>
+            
+            <f:searchManager>
+                <f:SearchManager
+                    search="onSearchTiles"
+                    liveChange="onSearchLiveChange"
+                    placeholder="{i18n>searchPlaceholder}"/>
+            </f:searchManager>
+            
+            <f:menu>
+                <Menu
+                    items="{/menuItems}">
+                    <MenuItem
+                        text="{text}"
+                        icon="{icon}"
+                        press="onMenuItemPress"/>
+                </Menu>
+            </f:menu>
+            
+        </f:ShellBar>
+        
+        <content>
+            <VBox class="sapUiMediumMargin">
+                
+                <!-- Header Section -->
+                <Panel
+                    id="headerPanel"
+                    class="sapUiResponsiveMargin"
+                    backgroundDesign="Transparent">
+                    <content>
+                        <HBox justifyContent="SpaceBetween" alignItems="Center">
+                            <VBox>
+                                <Title 
+                                    text="{/userInfo/welcomeText}" 
+                                    level="H1"
+                                    class="sapUiMediumMarginBottom"/>
+                                <Text 
+                                    text="{/userInfo/description}"
+                                    class="sapUiMediumMarginBottom"/>
+                            </VBox>
+                            <HBox>
+                                <Button
+                                    id="settingsBtn"
+                                    icon="sap-icon://action-settings"
+                                    tooltip="{i18n>settings}"
+                                    press="onSettingsPress"
+                                    type="Transparent"/>
+                                <Button
+                                    id="userMenuBtn"
+                                    icon="sap-icon://person-placeholder"
+                                    text="{/userInfo/userName}"
+                                    press="onUserMenuPress"
+                                    type="Transparent"/>
+                            </HBox>
+                        </HBox>
+                    </content>
+                </Panel>
+
+                <!-- Search Section -->
+                <Panel
+                    id="searchPanel"
+                    class="sapUiResponsiveMargin"
+                    backgroundDesign="Transparent">
+                    <content>
+                        <SearchField
+                            id="tileSearchField"
+                            placeholder="{i18n>searchPlaceholder}"
+                            width="100%"
+                            search="onSearchTiles"
+                            liveChange="onSearchLiveChange"
+                            class="sapUiMediumMarginBottom"/>
+                    </content>
+                </Panel>
+
+                <!-- Categories Filter -->
+                <Panel
+                    id="categoryPanel"
+                    class="sapUiResponsiveMargin"
+                    backgroundDesign="Transparent">
+                    <content>
+                        <SegmentedButton
+                            id="categoryFilter"
+                            selectedKey="{/selectedCategory}"
+                            selectionChange="onCategoryChange"
+                            class="sapUiMediumMarginBottom">
+                            <items>
+                                <SegmentedButtonItem
+                                    key="all"
+                                    text="{i18n>allCategories}"/>
+                                <SegmentedButtonItem
+                                    key="finance"
+                                    text="{i18n>finance}"/>
+                                <SegmentedButtonItem
+                                    key="hr"
+                                    text="{i18n>humanResources}"/>
+                                <SegmentedButtonItem
+                                    key="logistics"
+                                    text="{i18n>logistics}"/>
+                                <SegmentedButtonItem
+                                    key="analytics"
+                                    text="{i18n>analytics}"/>
+                            </items>
+                        </SegmentedButton>
+                    </content>
+                </Panel>
+
+                <!-- Main Applications Section -->
+                <Panel
+                    id="tilesPanel"
+                    headerText="{i18n>availableApps}"
+                    class="sapUiResponsiveMargin"
+                    expandable="false">
+                    <content>
+                        
+                        <!-- Responsive Grid Layout for GenericTiles -->
+                        <layout:Grid
+                            id="tilesGrid"
+                            defaultSpan="XL3 L4 M6 S12"
+                            containerQuery="true"
+                            class="sapUiResponsiveMargin"
+                            content="{path: '/tiles'}">
+                            
+                            <!-- Generic Tile Template -->
+                            <GenericTile
+                                class="sapUiMediumMargin launchpadTile"
+                                header="{title}"
+                                subheader="{subtitle}"
+                                frameType="OneByOne"
+                                state="{state}"
+                                press="onTilePress"
+                                mode="ContentMode"
+                                visible="{visible}"
+                                backgroundColor="{backgroundColor}"
+                                failedText="{failedText}"
+                                scope="{= ${/editMode} ? 'Actions' : 'Display'}"
+                                sizeBehavior="Responsive">
+                                
+                                <!-- Tile Content -->
+                                <TileContent
+                                    footer="{footer}"
+                                    frameType="Auto">
+                                    <content>
+                                        <!-- Image Content for icon-based tiles -->
+                                        <ImageContent
+                                            src="{iconSrc}"
+                                            description="{imageDescription}"
+                                            visible="{parts: [{path: 'iconSrc'}, {path: 'numericValue'}], formatter: '.formatImageVisible'}"/>
+                                            
+                                        <!-- Numeric Content for KPI tiles -->
+                                        <NumericContent
+                                            value="{numericValue}"
+                                            scale="{numericScale}"
+                                            valueColor="{numericValueColor}"
+                                            indicator="{numericIndicator}"
+                                            trend="{numericTrend}"
+                                            icon="{iconSrc}"
+                                            withMargin="true"
+                                            visible="{path: 'numericValue', formatter: '.formatNumericVisible'}"/>
+                                    </content>
+                                </TileContent>
+                                
+                                <!-- Action Buttons -->
+                                <actionButtons>
+                                    <Button
+                                        icon="sap-icon://action"
+                                        press="onTileAction"
+                                        visible="{hasActions}"
+                                        tooltip="{i18n>moreActions}"
+                                        type="Transparent"/>
+                                    <Button
+                                        icon="sap-icon://delete"
+                                        press="onTileDelete"
+                                        visible="{parts: [{path: '/editMode'}, {path: 'removable'}], formatter: '.formatDeleteVisible'}"
+                                        tooltip="{i18n>removeTile}"
+                                        type="Transparent"/>
+                                </actionButtons>
+                                
+                            </GenericTile>
+                            
+                        </layout:Grid>
+
+                        <!-- Add New Tile Section -->
+                        <HBox justifyContent="Center" class="sapUiMediumMarginTop">
+                            <Button
+                                id="addTileBtn"
+                                text="{i18n>addNewTile}"
+                                icon="sap-icon://add"
+                                press="onAddTilePress"
+                                visible="{/canAddTiles}"
+                                type="Emphasized"/>
+                        </HBox>
+                            
+                    </content>
+                </Panel>
+
+                <!-- Recently Used Section -->
+                <Panel
+                    id="recentPanel"
+                    headerText="{i18n>recentlyUsed}"
+                    class="sapUiResponsiveMargin"
+                    expandable="true"
+                    expanded="false"
+                    visible="{path: '/recentTiles', formatter: '.formatArrayVisible'}">
+                    <content>
+                        
+                        <!-- Recent Tiles - Horizontal Layout -->
+                        <ScrollContainer
+                            horizontal="true"
+                            vertical="false"
+                            height="auto"
+                            class="sapUiSmallMargin">
+                            
+                            <HBox items="{/recentTiles}" class="sapUiSmallMargin">
+                                
+                                <!-- Compact Recent Tile -->
+                                <GenericTile
+                                    class="recentTile sapUiTinyMargin"
+                                    header="{title}"
+                                    subheader="{subtitle}"
+                                    frameType="TwoByOne"
+                                    press="onTilePress"
+                                    mode="ContentMode"
+                                    scope="Display"
+                                    sizeBehavior="Small">
+                                    
+                                    <TileContent
+                                        frameType="Auto"
+                                        footer="{= ${lastAccessed} ? 'Last accessed: ' + ${lastAccessed} : ''}">
+                                        <content>
+                                            <ImageContent 
+                                                src="{iconSrc}"
+                                                description="{subtitle}"/>
+                                        </content>
+                                    </TileContent>
+                                    
+                                </GenericTile>
+                                
+                            </HBox>
+                            
+                        </ScrollContainer>
+                        
+                    </content>
+                </Panel>
+
+                <!-- Favorites Section (if user has favorites) -->
+                <Panel
+                    id="favoritesPanel"
+                    headerText="{i18n>favorites}"
+                    class="sapUiResponsiveMargin"
+                    expandable="true"
+                    expanded="true"
+                    visible="{path: '/favoriteTiles', formatter: '.formatArrayVisible'}">
+                    <content>
+                        
+                        <layout:Grid
+                            defaultSpan="XL3 L4 M6 S12"
+                            containerQuery="true">
+                            
+                            <GenericTile
+                                class="sapUiMediumMargin favoriteTile"
+                                header="{title}"
+                                subheader="{subtitle}"
+                                frameType="OneByOne"
+                                press="onTilePress"
+                                mode="ContentMode"
+                                scope="Display"
+                                sizeBehavior="Responsive"
+                                items="{/favoriteTiles}">
+                                
+                                <TileContent
+                                    frameType="Auto"
+                                    footer="Added to favorites">
+                                    <content>
+                                        <ImageContent 
+                                            src="{iconSrc}"
+                                            description="{subtitle}"/>
+                                    </content>
+                                </TileContent>
+                                
+                                <actionButtons>
+                                    <Button
+                                        icon="sap-icon://unfavorite"
+                                        press="onRemoveFromFavorites"
+                                        tooltip="{i18n>removeFromFavorites}"
+                                        type="Transparent"/>
+                                </actionButtons>
+                                
+                            </GenericTile>
+                            
+                        </layout:Grid>
+                        
+                    </content>
+                </Panel>
+
+            </VBox>
+        </content>
+        
+        <!-- Footer Toolbar -->
+        <footer>
+            <Toolbar>
+                <content>
+                    <Text text="{parts: [{path: 'i18n>totalApps'}, {path: '/totalAppsCount'}], formatter: '.formatTotalAppsText'}" class="sapUiSmallText"/>
+                    <ToolbarSpacer/>
+                    <Button
+                        id="refreshBtn"
+                        icon="sap-icon://refresh"
+                        tooltip="{i18n>refresh}"
+                        press="onRefreshTiles"
+                        type="Transparent"/>
+                    <Button
+                        id="editModeBtn"
+                        text="{parts: [{path: '/editMode'}, {path: 'i18n>editMode'}, {path: 'i18n>doneEditing'}], formatter: '.formatEditModeText'}"
+                        press="onToggleEditMode"
+                        visible="{/canEditTiles}"
+                        type="{path: '/editMode', formatter: '.formatEditModeType'}"/>
+                    <Button
+                        id="helpBtn"
+                        icon="sap-icon://sys-help"
+                        tooltip="{i18n>help}"
+                        press="onHelpPress"
+                        type="Transparent"/>
+                </content>
+            </Toolbar>
+        </footer>
+        
+    </Page>
+    
+</mvc:View>
