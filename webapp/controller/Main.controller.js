@@ -161,6 +161,22 @@ sap.ui.define([
                     }
                 }
                 
+                // Synchronize selection between calendars
+                const oCalendarLeft = this.byId("employeeCalendarLeft");
+                const oCalendarRight = this.byId("employeeCalendarRight");
+                const oSourceCalendar = oEvent.getSource();
+                const oTargetCalendar = (oSourceCalendar === oCalendarLeft) ? oCalendarRight : oCalendarLeft;
+                
+                // Clear previous selection on target calendar
+                oTargetCalendar.removeAllSelectedDates();
+                
+                // Create new date range for target calendar
+                const oNewDateRange = new sap.ui.unified.DateRange({
+                    startDate: oStartDate,
+                    endDate: oEndDate
+                });
+                oTargetCalendar.addSelectedDate(oNewDateRange);
+                
                 // Update model with selected dates
                 const oCalendarModel = this.getModel("calendar");
                 oCalendarModel.setProperty("/startDate", oStartDate);
@@ -231,14 +247,18 @@ sap.ui.define([
             }
 
             // Update calendar selection mode based on view
-            const oCalendar = this.byId("employeeCalendar");
-            if (oCalendar) {
+            const oCalendarLeft = this.byId("employeeCalendarLeft");
+            const oCalendarRight = this.byId("employeeCalendarRight");
+            if (oCalendarLeft && oCalendarRight) {
                 const bSingleSelection = sKey === "oneDay" || sKey === "multiPerson";
-                oCalendar.setSingleSelection(bSingleSelection);
-                oCalendar.setIntervalSelection(!bSingleSelection);
+                oCalendarLeft.setSingleSelection(bSingleSelection);
+                oCalendarLeft.setIntervalSelection(!bSingleSelection);
+                oCalendarRight.setSingleSelection(bSingleSelection);
+                oCalendarRight.setIntervalSelection(!bSingleSelection);
 
                 // Clear selection when switching views
-                oCalendar.removeAllSelectedDates();
+                oCalendarLeft.removeAllSelectedDates();
+                oCalendarRight.removeAllSelectedDates();
                 
                 // Reset the calendar model dates
                 const oCalendarModel = this.getModel("calendar");

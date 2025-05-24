@@ -45,12 +45,20 @@
                                 <VBox class="sapUiSmallMargin">
                                     <!-- Calendar Panel -->
                                     <Panel headerText="{i18n>calendarTitle}" expandable="true" expanded="true">
-                                        <unified:Calendar
-                                            id="employeeCalendar"
-                                            intervalSelection="true"
-                                            singleSelection="false"
-                                            select="onCalendarSelect">
-                                        </unified:Calendar>
+                                        <HBox class="sapUiSmallMargin" justifyContent="SpaceBetween">
+                                            <unified:Calendar
+                                                id="employeeCalendarLeft"
+                                                intervalSelection="true"
+                                                singleSelection="false"
+                                                select="onCalendarSelect">
+                                            </unified:Calendar>
+                                            <unified:Calendar
+                                                id="employeeCalendarRight"
+                                                intervalSelection="true"
+                                                singleSelection="false"
+                                                select="onCalendarSelect">
+                                            </unified:Calendar>
+                                        </HBox>
                                         
                                         <HBox class="sapUiSmallMarginTop">
                                             <Label text="{i18n>dateRangeLabel}:" class="sapUiTinyMarginEnd" />
