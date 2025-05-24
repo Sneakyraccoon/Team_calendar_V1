@@ -1,0 +1,98 @@
+<mvc:View
+    controllerName="ui5.employeecalendar.controller.Settings"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core">
+    
+    <Page
+        id="settingsPage"
+        title="Settings"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+        
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <Panel
+                    headerText="Application Settings"
+                    class="sapUiResponsiveMargin"
+                    width="auto">
+                    <content>
+                        <List>
+                            <InputListItem label="Theme">
+                                <Select
+                                    id="themeSelect"
+                                    selectedKey="{/settings/theme}"
+                                    change=".onThemeChange">
+                                    <core:Item key="sap_horizon" text="Morning Horizon (Light)"/>
+                                    <core:Item key="sap_horizon_dark" text="Evening Horizon (Dark)"/>
+                                    <core:Item key="sap_horizon_hcb" text="High Contrast Black"/>
+                                    <core:Item key="sap_horizon_hcw" text="High Contrast White"/>
+                                </Select>
+                            </InputListItem>
+                            
+                            <InputListItem label="Density">
+                                <Select
+                                    id="densitySelect"
+                                    selectedKey="{/settings/density}"
+                                    change=".onDensityChange">
+                                    <core:Item key="cozy" text="Cozy"/>
+                                    <core:Item key="compact" text="Compact"/>
+                                </Select>
+                            </InputListItem>
+                            
+                            <InputListItem label="Language">
+                                <Select
+                                    id="languageSelect"
+                                    selectedKey="{/settings/language}"
+                                    change=".onLanguageChange">
+                                    <core:Item key="en" text="English"/>
+                                    <core:Item key="de" text="Deutsch"/>
+                                    <core:Item key="fr" text="Français"/>
+                                </Select>
+                            </InputListItem>
+                        </List>
+                        
+                        <Title
+                            text="Notifications"
+                            class="sapUiMediumMarginTop sapUiTinyMarginBottom"
+                            level="H2"/>
+                            
+                        <List>
+                            <InputListItem label="Enable Notifications">
+                                <Switch 
+                                    state="{path: '/settings/notifications/enabled', type: 'sap.ui.model.type.Boolean'}"
+                                    customTextOn="Yes" 
+                                    customTextOff="No"/>
+                            </InputListItem>
+                            
+                            <InputListItem label="Email Notifications">
+                                <Switch 
+                                    state="{path: '/settings/notifications/email', type: 'sap.ui.model.type.Boolean'}"
+                                    enabled="{path: '/settings/notifications/enabled', type: 'sap.ui.model.type.Boolean'}"
+                                    customTextOn="Yes" 
+                                    customTextOff="No"/>
+                            </InputListItem>
+                        </List>
+                    </content>
+                </Panel>
+            </VBox>
+        </content>
+        
+        <footer>
+            <Toolbar>
+                <content>
+                    <ToolbarSpacer/>
+                    <Button
+                        text="Save Changes"
+                        type="Emphasized"
+                        press=".onSaveSettings"/>
+                    <Button
+                        text="Cancel"
+                        press=".onNavBack"/>
+                </content>
+            </Toolbar>
+        </footer>
+        
+    </Page>
+</mvc:View> 

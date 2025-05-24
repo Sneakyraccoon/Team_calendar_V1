@@ -8,56 +8,48 @@
     displayBlock="true"
     height="100%">
     
+    <!-- ShellBar - упрощенная версия без проблемных агрегаций -->
+    <f:ShellBar
+        id="shellBar" 
+        title="Didgital workspace"
+        secondTitle="EMEA"
+        showCopilot="false"
+        showSearch="false"
+        showNotifications="false"
+        showProductSwitcher="false"
+        homeIcon="sap-icon://home"
+        homeIconTooltip="Home"
+        homeIconPressed="onHomePress">
+        
+        <!-- Search Field -->
+        <f:searchManager>
+            <f:SearchManager
+                search="onSearchTiles"
+                liveChange="onSearchLiveChange"
+                placeholder="Start typing to search"/>
+        </f:searchManager>
+        
+        <!-- Profile Avatar -->
+        <f:profile>
+            <Avatar
+                icon="sap-icon://customer"
+                displaySize="S"
+                press="onUserMenuPress"
+                tooltip="User Profile"/>
+        </f:profile>
+        
+    </f:ShellBar>
+    
     <Page
         id="launchpadPage"
         showHeader="false"
         showNavButton="false"
         class="sapUiNoContentPadding">
         
-        <!-- ShellBar -->
-        <f:ShellBar
-            title="{i18n>appTitle}"
-            secondTitle="{/userInfo/description}"
-            showCopilot="false"
-            showSearch="true"
-            showNotifications="true"
-            showProductSwitcher="true"
-            notificationsNumber="{/notificationsCount}"
-            homeIcon="sap-icon://home"
-            showMenuButton="false"
-            backgroundColor="#354A5F">
-            
-            <f:profile>
-                <Avatar
-                    initials="{= ${/userInfo/userName}.substr(0, 2)}"
-                    displaySize="XS"
-                    backgroundColor="#5D84B0"
-                    press="onUserMenuPress"/>
-            </f:profile>
-            
-            <f:searchManager>
-                <f:SearchManager
-                    search="onSearchTiles"
-                    liveChange="onSearchLiveChange"
-                    placeholder="{i18n>searchPlaceholder}"/>
-            </f:searchManager>
-            
-            <f:menu>
-                <Menu
-                    items="{/menuItems}">
-                    <MenuItem
-                        text="{text}"
-                        icon="{icon}"
-                        press="onMenuItemPress"/>
-                </Menu>
-            </f:menu>
-            
-        </f:ShellBar>
-        
         <content>
             <VBox class="sapUiMediumMargin">
                 
-                <!-- Header Section -->
+                <!-- Header Section 
                 <Panel
                     id="headerPanel"
                     class="sapUiResponsiveMargin"
@@ -90,15 +82,15 @@
                         </HBox>
                     </content>
                 </Panel>
-
-                <!-- Search Section -->
+-->
+                <!-- Search Section 
                 <Panel
                     id="searchPanel"
                     class="sapUiResponsiveMargin"
                     backgroundDesign="Transparent">
                     <content>
                         <SearchField
-                            id="tileSearchField"
+                            id="mainSearchField"
                             placeholder="{i18n>searchPlaceholder}"
                             width="100%"
                             search="onSearchTiles"
@@ -106,7 +98,7 @@
                             class="sapUiMediumMarginBottom"/>
                     </content>
                 </Panel>
-
+-->
                 <!-- Categories Filter -->
                 <Panel
                     id="categoryPanel"
@@ -330,7 +322,6 @@
             </VBox>
         </content>
         
-        <!-- Footer Toolbar -->
         <footer>
             <Toolbar>
                 <content>
@@ -357,7 +348,6 @@
                 </content>
             </Toolbar>
         </footer>
-        
     </Page>
     
 </mvc:View>

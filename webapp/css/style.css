@@ -109,24 +109,74 @@
 
 .sapFShellBar {
     box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.15);
+    height: 2.75rem;
+    min-height: 2.75rem;
+    background: #354A5F;
 }
 
 .sapFShellBar .sapFShellBarContainer {
     padding: 0 1rem;
 }
 
-/* Ensure proper content spacing below ShellBar */
-.sapMPage > .sapMPageHeader + section {
-    top: 2.75rem;
+/* ShellBar title styling */
+.sapFShellBar .sapMTitle {
+    color: #ffffff;
 }
 
-/* Adjust content padding */
+/* ShellBar search styling */
+.sapFShellBar .sapFShellBarSearch {
+    max-width: 400px;
+    margin: 0 2rem;
+}
+
+/* ShellBar button styling */
+.sapFShellBar .sapMBtn {
+    margin-left: 0.25rem;
+}
+
+.sapFShellBar .sapMBtnInner {
+    color: #ffffff;
+}
+
+/* Category panel styling */
+#categoryPanel {
+    margin-top: 0.5rem;
+}
+
+.sapMSegB {
+    border-radius: 0.25rem;
+    background-color: #ffffff;
+}
+
+.sapMSegBBtn {
+    border-color: #354A5F;
+}
+
+.sapMSegBBtn.sapMSegBBtnSel {
+    background-color: #354A5F;
+    color: #ffffff;
+}
+
+/* Adjust page position below ShellBar */
+.sapMApp .sapMPage {
+    top: 2.75rem !important;
+    height: calc(100% - 2.75rem) !important;
+}
+
+/* Content spacing */
+.sapMPage > section {
+    top: 0;
+}
+
 .sapMPage > section > .sapUiMediumMargin {
-    padding-top: 1rem;
+    padding-top: 0.5rem;
 }
 
-/* Ensure proper ShellBar height */
-.sapFShellBar {
-    height: 2.75rem;
-    min-height: 2.75rem;
+/* Footer positioning */
+.sapMPageWithFooter .sapMPageFooter {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 -0.125rem 0.25rem rgba(0,0,0,0.1);
 }

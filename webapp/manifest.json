@@ -40,7 +40,8 @@
 				"sap.m": {},
 				"sap.ui.core": {},
 				"sap.ui.layout": {},
-				"sap.ui.unified": {}
+				"sap.ui.unified": {},
+				"sap.f": {}
 			}
 		},
 		"models": {
@@ -149,6 +150,36 @@
 					"viewName": "Main",
 					"viewLevel": 2,
 					"viewId": "mainView"
+				},
+				"componentView": {
+					"viewName": "ComponentView",
+					"viewLevel": 2,
+					"viewId": "componentView"
+				},
+				"employeeManagement": {
+					"viewName": "EmployeeManagement",
+					"viewLevel": 2,
+					"viewId": "employeeManagementView"
+				},
+				"expenseReports": {
+					"viewName": "ExpenseReports",
+					"viewLevel": 2,
+					"viewId": "expenseReportsView"
+				},
+				"tileManagement": {
+					"viewName": "TileManagement",
+					"viewLevel": 2,
+					"viewId": "tileManagementView"
+				},
+				"settings": {
+					"viewName": "Settings",
+					"viewLevel": 2,
+					"viewId": "settingsView"
+				},
+				"profile": {
+					"viewName": "Profile",
+					"viewLevel": 2,
+					"viewId": "profileView"
 				}
 			}
 		},
