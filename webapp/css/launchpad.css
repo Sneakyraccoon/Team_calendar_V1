@@ -1,5 +1,59 @@
 /* OpenUI5 Launchpad with GenericTile Styles */
 
+/* ShellBar Styles */
+.sapFShellBar {
+    padding: 0.5rem 1rem 0 1rem;  /* top right bottom left */
+    background: #354A5F !important;
+    height: 2.75rem;
+    min-height: 2.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; /* Ensures padding is included in the element's total width and height */
+    width: 100%; /* Occupy full available width */
+    overflow: hidden; /* Prevents content from spilling out if something is still too wide */
+}
+
+.sapFShellBar[breakpoint-size="S"] {
+    padding: 0.5rem 1rem 0 1rem; /* Maintain padding for small screens */
+}
+
+.sapFShellBar .sapMTitle {
+    color: #FFFFFF;
+    font-size: 1rem;
+}
+
+.sapFShellBar .sapMText {
+    color: #FFFFFF;
+}
+
+.sapFShellBar .sapFShellBarContainer {
+    padding: 0 1rem;
+}
+
+.sapFShellBar .sapMBtnIcon {
+    color: #FFFFFF;
+}
+
+/* ShellBar search styling */
+.sapFShellBar .sapFShellBarSearch {
+    max-width: 400px;
+    margin: 0 2rem;
+}
+
+/* ShellBar button styling */
+.sapFShellBar .sapMBtn {
+    margin-left: 0.25rem;
+}
+
+.sapFShellBar .sapMBtnInner {
+    color: #FFFFFF;
+}
+
+/* Adjust page content to be below ShellBar */
+.sapMPage {
+    /* Assuming ShellBar height is 2.75rem + 0.5rem top padding */
+    padding-top: calc(2.75rem + 0.5rem); 
+}
+
 /* Main Launchpad Tile Styling */
 .launchpadTile {
     transition: all 0.3s ease;

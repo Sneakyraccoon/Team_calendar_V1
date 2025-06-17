@@ -17,9 +17,9 @@
         showSearch="false"
         showNotifications="false"
         showProductSwitcher="false"
-        homeIcon="sap-icon://home"
-        homeIconTooltip="Home"
-        homeIconPressed="onHomePress">
+        showNavButton="true"
+        navButtonPressed="onNavButtonPressed"
+        class="sapFShellBar">
         
         <!-- Search Field -->
         <f:searchManager>
@@ -32,10 +32,9 @@
         <!-- Profile Avatar -->
         <f:profile>
             <Avatar
-                icon="sap-icon://customer"
-                displaySize="S"
-                press="onUserMenuPress"
-                tooltip="User Profile"/>
+                displaySize="XS"
+                initials=""
+                press="onAvatarPressed"/>
         </f:profile>
         
     </f:ShellBar>
