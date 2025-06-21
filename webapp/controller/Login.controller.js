@@ -41,8 +41,25 @@ sap.ui.define([
          * Handle live change on input fields to control the submit button state
          * @public
          */
-        onLiveChange() {
+        onLiveChange: function (oEvent) {
+
+            // Get the value and ID of the input field that triggered the event
+            const sFieldValue = oEvent.getParameter("value");
+            const sFieldId = oEvent.getSource().getId();
+             
+
+            // Get the login model
+            // This is the model used for the login form
             const oLoginModel = this.getModel("login");
+
+            // Check if the input field is for employeeId or password 
+            if (sFieldId.includes("employeeId")) {
+                oLoginModel.setProperty("/employeeId", sFieldValue);
+            } else if (sFieldId.includes("password")) {
+                oLoginModel.setProperty("/password", sFieldValue);
+            }
+
+            // Get values from input fields
             const sEmployeeId = oLoginModel.getProperty("/employeeId");
             const sPassword = oLoginModel.getProperty("/password");
             
